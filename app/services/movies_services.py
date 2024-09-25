@@ -3,12 +3,12 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.exceptions import MovieNotFoundException
 from app.core.logger import logger
-from app.models.movie import Movie, CreateMovie, MovieSchema
+from app.models.movie import Movie
 
 
 class MovieService:
     @classmethod
-    async def create_movie(cls, movie: CreateMovie, db: AsyncSession):
+    async def create_movie(cls, movie: Movie, db: AsyncSession):
         db.add(movie)
         await db.commit()  # Commit the transaction
         await db.refresh(movie)  # Refresh to get the ID of the new movie
@@ -32,7 +32,7 @@ class MovieService:
         return movie
 
     @classmethod
-    async def update_movie(cls, movie_id: int, updated_movie: MovieSchema, db: AsyncSession):
+    async def update_movie(cls, movie_id: int, updated_movie: Movie, db: AsyncSession):
         result = await db.execute(select(Movie).where(Movie.id == movie_id))
         movie = result.scalar_one_or_none()
         if movie is None:
@@ -49,9 +49,9 @@ class MovieService:
     async def delete_movie(cls, movie_id: int, db: AsyncSession):
         result = await db.execute(select(Movie).where(Movie.id == movie_id))
         movie = result.scalar_one_or_none()
-        if movie is None:
-            raise MovieNotFoundException(movie_id)
 
-        await db.delete(movie)
-        await db.commit()
-        return {"message": "Movie deleted successfully"}
+        if movie is not None:
+            await db.delete(movie)
+            await db.commit()
+
+        return movie
