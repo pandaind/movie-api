@@ -9,6 +9,7 @@ class Movie(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, index=True)
+    genre = Column(String, index=True)
     director = Column(String, index=True)
     release_year = Column(Integer)
 
@@ -19,6 +20,7 @@ class Movie(Base):
 class MovieSchema(BaseModel):
     id: int
     title: str
+    genre: str
     director: str
     release_year: int
 
