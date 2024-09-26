@@ -5,6 +5,7 @@ asyncpg
 python-dotenv
 pydantic~=2.9.2
 alembic
+apscheduler
 
 #Test
 pytest

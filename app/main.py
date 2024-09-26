@@ -15,6 +15,7 @@ from app.core.exceptions import (
     unhandled_exception_handler,
 )
 from app.db.database import init_db
+from app.jobs.scheduler_jobs import scheduler
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -25,10 +26,12 @@ logger = logging.getLogger(__name__)
 async def lifespan(app: FastAPI):
     # Startup event
     logger.info("Application startup...")
-    await init_db()  # Initialize the database and create tables
+    scheduler.start()
+    # await init_db()  # Initialize the database and create tables
     yield  # Control passes to the app during this time
     # Shutdown event
     logger.info("Application shutdown...")
+    scheduler.shutdown()
 
 
 app = FastAPI(
@@ -47,3 +50,4 @@ app.add_exception_handler(MovieAlreadyExistsException, movie_already_exists_hand
 app.add_exception_handler(RequestValidationError, validation_exception_handler)
 app.add_exception_handler(HTTPException, http_exception_handler)
 app.add_exception_handler(Exception, unhandled_exception_handler)
+
