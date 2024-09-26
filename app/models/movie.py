@@ -24,10 +24,11 @@ class MovieSchema(BaseModel):
     director: str
     release_year: int
 
-    class Config:
-        from_attributes = True  # Allows SQLAlchemy models to be converted to Pydantic models
-
+    model_config = {
+        "from_attributes": True  # Allows SQLAlchemy models to be converted to Pydantic models
+    }
 
 class CreateMovie(MovieSchema):
-    class Config:
-        from_attributes = True  # Allows Pydantic models to be converted to SQLAlchemy models
+    model_config = {
+        "from_attributes": True  # Allows SQLAlchemy models to be converted to Pydantic models
+    }

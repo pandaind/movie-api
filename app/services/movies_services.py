@@ -1,7 +1,7 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.exceptions import MovieNotFoundException
+from app.core.exceptions import MovieNotFoundException, MovieAlreadyExistsException
 from app.core.logger import logger
 from app.models.movie import Movie
 
@@ -9,6 +9,9 @@ from app.models.movie import Movie
 class MovieService:
     @classmethod
     async def create_movie(cls, movie: Movie, db: AsyncSession):
+        existing_movie = await db.execute(select(Movie).filter_by(title=movie.title))
+        if existing_movie.scalars().first():
+            raise MovieAlreadyExistsException(movie.title)
         db.add(movie)
         await db.commit()  # Commit the transaction
         await db.refresh(movie)  # Refresh to get the ID of the new movie
@@ -55,3 +58,9 @@ class MovieService:
             await db.commit()
 
         return movie
+
+    @classmethod
+    async def get_movies_by_genre(cls, genre: str, db: AsyncSession):
+        result = await db.execute(select(Movie).where(Movie.genre == genre))
+        movies = result.scalars().all()
+        return movies

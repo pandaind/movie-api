@@ -1,0 +1,970 @@
+2024-09-26 15:33:27,196 - app.main - INFO - Application startup...
+2024-09-26 15:33:27,229 - sqlalchemy.engine.Engine - INFO - select pg_catalog.version()
+2024-09-26 15:33:27,229 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+2024-09-26 15:33:27,234 - sqlalchemy.engine.Engine - INFO - select current_schema()
+2024-09-26 15:33:27,234 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+2024-09-26 15:33:27,236 - sqlalchemy.engine.Engine - INFO - show standard_conforming_strings
+2024-09-26 15:33:27,237 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+2024-09-26 15:33:27,238 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2024-09-26 15:33:27,241 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR
+2024-09-26 15:33:27,242 - sqlalchemy.engine.Engine - INFO - [generated in 0.00116s] ('movies', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
+2024-09-26 15:33:27,248 - sqlalchemy.engine.Engine - INFO - COMMIT
+2024-09-26 15:33:53,424 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2024-09-26 15:33:53,426 - sqlalchemy.engine.Engine - INFO - SELECT movies.id, movies.title, movies.genre, movies.director, movies.release_year 
+FROM movies 
+WHERE movies.title = $1::VARCHAR
+2024-09-26 15:33:53,427 - sqlalchemy.engine.Engine - INFO - [generated in 0.00069s] ('Test Movie',)
+2024-09-26 15:33:53,432 - sqlalchemy.engine.Engine - INFO - INSERT INTO movies (id, title, genre, director, release_year) VALUES ($1::INTEGER, $2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::INTEGER)
+2024-09-26 15:33:53,433 - sqlalchemy.engine.Engine - INFO - [generated in 0.00068s] (1, 'Test Movie', 'Horror', 'Test Director', 2021)
+2024-09-26 15:33:53,435 - sqlalchemy.engine.Engine - INFO - COMMIT
+2024-09-26 15:33:53,441 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2024-09-26 15:33:53,443 - sqlalchemy.engine.Engine - INFO - SELECT movies.id, movies.title, movies.genre, movies.director, movies.release_year 
+FROM movies 
+WHERE movies.id = $1::INTEGER
+2024-09-26 15:33:53,443 - sqlalchemy.engine.Engine - INFO - [generated in 0.00058s] (1,)
+2024-09-26 15:33:53,445 - Movie-API - INFO - Movie 'Test Movie' created successfully.
+2024-09-26 15:33:53,446 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2024-09-26 15:33:54,529 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2024-09-26 15:33:54,530 - sqlalchemy.engine.Engine - INFO - SELECT movies.id, movies.title, movies.genre, movies.director, movies.release_year 
+FROM movies 
+WHERE movies.title = $1::VARCHAR
+2024-09-26 15:33:54,531 - sqlalchemy.engine.Engine - INFO - [cached since 1.105s ago] ('Test Movie',)
+2024-09-26 15:33:54,533 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2024-09-26 15:35:15,526 - app.main - INFO - Application shutdown...
+2024-09-26 15:35:17,258 - app.main - INFO - Application startup...
+2024-09-26 15:35:17,288 - sqlalchemy.engine.Engine - INFO - select pg_catalog.version()
+2024-09-26 15:35:17,289 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+2024-09-26 15:35:17,294 - sqlalchemy.engine.Engine - INFO - select current_schema()
+2024-09-26 15:35:17,295 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+2024-09-26 15:35:17,297 - sqlalchemy.engine.Engine - INFO - show standard_conforming_strings
+2024-09-26 15:35:17,298 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+2024-09-26 15:35:17,300 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2024-09-26 15:35:17,305 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR
+2024-09-26 15:35:17,306 - sqlalchemy.engine.Engine - INFO - [generated in 0.00111s] ('movies', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
+2024-09-26 15:35:17,311 - sqlalchemy.engine.Engine - INFO - COMMIT
+2024-09-26 15:35:39,956 - app.main - INFO - Application shutdown...
+2024-09-26 16:00:59,468 - Movie-API - WARNING - Validation Error: [{'type': 'missing', 'loc': ('body', 'id'), 'msg': 'Field required', 'input': {'title': 'Test Movie', 'genre': 'Action'}}, {'type': 'missing', 'loc': ('body', 'director'), 'msg': 'Field required', 'input': {'title': 'Test Movie', 'genre': 'Action'}}, {'type': 'missing', 'loc': ('body', 'release_year'), 'msg': 'Field required', 'input': {'title': 'Test Movie', 'genre': 'Action'}}]
+2024-09-26 16:00:59,469 - httpx - INFO - HTTP Request: POST http://test/v1/movies/ "HTTP/1.1 422 Unprocessable Entity"
+2024-09-26 16:00:59,493 - sqlalchemy.engine.Engine - INFO - select pg_catalog.version()
+2024-09-26 16:00:59,493 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+2024-09-26 16:00:59,494 - sqlalchemy.engine.Engine - INFO - select current_schema()
+2024-09-26 16:00:59,495 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+2024-09-26 16:00:59,496 - sqlalchemy.engine.Engine - INFO - show standard_conforming_strings
+2024-09-26 16:00:59,496 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+2024-09-26 16:00:59,497 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2024-09-26 16:00:59,499 - sqlalchemy.engine.Engine - INFO - SELECT movies.id, movies.title, movies.genre, movies.director, movies.release_year 
+FROM movies 
+WHERE movies.id = $1::INTEGER
+2024-09-26 16:00:59,500 - sqlalchemy.engine.Engine - INFO - [generated in 0.00037s] (1,)
+2024-09-26 16:00:59,503 - sqlalchemy.engine.Engine - INFO - DELETE FROM movies WHERE movies.id = $1::INTEGER
+2024-09-26 16:00:59,504 - sqlalchemy.engine.Engine - INFO - [generated in 0.00041s] (1,)
+2024-09-26 16:00:59,505 - sqlalchemy.engine.Engine - INFO - COMMIT
+2024-09-26 16:00:59,508 - httpx - INFO - HTTP Request: DELETE http://test/v1/movies/1 "HTTP/1.1 200 OK"
+2024-09-26 16:00:59,511 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2024-09-26 16:00:59,511 - sqlalchemy.engine.Engine - INFO - SELECT movies.id, movies.title, movies.genre, movies.director, movies.release_year 
+FROM movies 
+WHERE movies.id = $1::INTEGER
+2024-09-26 16:00:59,511 - sqlalchemy.engine.Engine - INFO - [cached since 0.01147s ago] (1,)
+2024-09-26 16:00:59,512 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2024-09-26 16:00:59,512 - Movie-API - CRITICAL - Unhandled Exception: 'NoneType' object has no attribute 'send'
+Traceback (most recent call last):
+  File "C:\Users\cpanda\AppData\Local\Programs\Python\Python311\Lib\asyncio\base_events.py", line 761, in call_soon
+    self._check_closed()
+  File "C:\Users\cpanda\AppData\Local\Programs\Python\Python311\Lib\asyncio\base_events.py", line 519, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\middleware\errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\_exception_handler.py", line 62, in wrapped_app
+    raise exc
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\_exception_handler.py", line 51, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\routing.py", line 715, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\routing.py", line 735, in app
+    await route.handle(scope, receive, send)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\_exception_handler.py", line 62, in wrapped_app
+    raise exc
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\_exception_handler.py", line 51, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\routing.py", line 73, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\fastapi\routing.py", line 301, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\fastapi\routing.py", line 212, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\app\api\v1\movies.py", line 65, in get_movie
+    movie = await MovieService.get_movie_by_id(movie_id, db)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\app\services\movies_services.py", line 30, in get_movie_by_id
+    result = await db.execute(select(Movie).where(Movie.id == movie_id))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\ext\asyncio\session.py", line 461, in execute
+    result = await greenlet_spawn(
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 201, in greenlet_spawn
+    result = context.throw(*sys.exc_info())
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2362, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2247, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\orm\context.py", line 305, in orm_execute_statement
+    result = conn.execute(
+             ^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1418, in execute
+    return meth(
+           ^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\sql\elements.py", line 515, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1640, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1846, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1986, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 2358, in _handle_dbapi_exception
+    raise exc_info[1].with_traceback(exc_info[2])
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\engine\default.py", line 941, in do_execute
+    cursor.execute(statement, parameters)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 572, in execute
+    self._adapt_connection.await_(
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 132, in await_only
+    return current.parent.switch(awaitable)  # type: ignore[no-any-return,attr-defined] # noqa: E501
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 196, in greenlet_spawn
+    value = await result
+            ^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 508, in _prepare_and_execute
+    await adapt_connection._start_transaction()
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 837, in _start_transaction
+    self._handle_exception(error)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 786, in _handle_exception
+    raise error
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 835, in _start_transaction
+    await self._transaction.start()
+  File "C:\git\MovieAPI\venv\Lib\site-packages\asyncpg\transaction.py", line 146, in start
+    await self._connection.execute(query)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\asyncpg\connection.py", line 350, in execute
+    result = await self._protocol.query(query, timeout)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "asyncpg\protocol\protocol.pyx", line 374, in query
+  File "asyncpg\protocol\protocol.pyx", line 367, in asyncpg.protocol.protocol.BaseProtocol.query
+  File "asyncpg\protocol\coreproto.pyx", line 1094, in asyncpg.protocol.protocol.CoreProtocol._simple_query
+  File "asyncpg\protocol\protocol.pyx", line 966, in asyncpg.protocol.protocol.BaseProtocol._write
+  File "C:\Users\cpanda\AppData\Local\Programs\Python\Python311\Lib\asyncio\proactor_events.py", line 365, in write
+    self._loop_writing(data=bytes(data))
+  File "C:\Users\cpanda\AppData\Local\Programs\Python\Python311\Lib\asyncio\proactor_events.py", line 401, in _loop_writing
+    self._write_fut = self._loop._proactor.send(self._sock, data)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'send'
+2024-09-26 16:00:59,528 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2024-09-26 16:00:59,529 - sqlalchemy.engine.Engine - INFO - SELECT movies.id, movies.title, movies.genre, movies.director, movies.release_year 
+FROM movies
+2024-09-26 16:00:59,530 - sqlalchemy.engine.Engine - INFO - [generated in 0.00054s] ()
+2024-09-26 16:00:59,531 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2024-09-26 16:00:59,531 - Movie-API - CRITICAL - Unhandled Exception: (sqlalchemy.dialects.postgresql.asyncpg.InterfaceError) <class 'asyncpg.exceptions._base.InterfaceError'>: cannot perform operation: another operation is in progress
+[SQL: SELECT movies.id, movies.title, movies.genre, movies.director, movies.release_year 
+FROM movies]
+(Background on this error at: https://sqlalche.me/e/20/rvf5)
+Traceback (most recent call last):
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 835, in _start_transaction
+    await self._transaction.start()
+  File "C:\git\MovieAPI\venv\Lib\site-packages\asyncpg\transaction.py", line 146, in start
+    await self._connection.execute(query)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\asyncpg\connection.py", line 350, in execute
+    result = await self._protocol.query(query, timeout)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "asyncpg\protocol\protocol.pyx", line 359, in query
+  File "asyncpg\protocol\protocol.pyx", line 744, in asyncpg.protocol.protocol.BaseProtocol._check_state
+asyncpg.exceptions._base.InterfaceError: cannot perform operation: another operation is in progress
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\engine\default.py", line 941, in do_execute
+    cursor.execute(statement, parameters)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 572, in execute
+    self._adapt_connection.await_(
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 132, in await_only
+    return current.parent.switch(awaitable)  # type: ignore[no-any-return,attr-defined] # noqa: E501
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 196, in greenlet_spawn
+    value = await result
+            ^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 508, in _prepare_and_execute
+    await adapt_connection._start_transaction()
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 837, in _start_transaction
+    self._handle_exception(error)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 784, in _handle_exception
+    raise translated_error from error
+sqlalchemy.dialects.postgresql.asyncpg.AsyncAdapt_asyncpg_dbapi.InterfaceError: <class 'asyncpg.exceptions._base.InterfaceError'>: cannot perform operation: another operation is in progress
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\middleware\errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\_exception_handler.py", line 62, in wrapped_app
+    raise exc
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\_exception_handler.py", line 51, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\routing.py", line 715, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\routing.py", line 735, in app
+    await route.handle(scope, receive, send)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\_exception_handler.py", line 62, in wrapped_app
+    raise exc
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\_exception_handler.py", line 51, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\routing.py", line 73, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\fastapi\routing.py", line 301, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\fastapi\routing.py", line 212, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\app\api\v1\movies.py", line 44, in get_movies
+    return await MovieService.get_all_movies(db)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\app\services\movies_services.py", line 23, in get_all_movies
+    result = await db.execute(select(Movie))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\ext\asyncio\session.py", line 461, in execute
+    result = await greenlet_spawn(
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 201, in greenlet_spawn
+    result = context.throw(*sys.exc_info())
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2362, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2247, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\orm\context.py", line 305, in orm_execute_statement
+    result = conn.execute(
+             ^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1418, in execute
+    return meth(
+           ^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\sql\elements.py", line 515, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1640, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1846, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1986, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 2355, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\engine\default.py", line 941, in do_execute
+    cursor.execute(statement, parameters)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 572, in execute
+    self._adapt_connection.await_(
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 132, in await_only
+    return current.parent.switch(awaitable)  # type: ignore[no-any-return,attr-defined] # noqa: E501
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 196, in greenlet_spawn
+    value = await result
+            ^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 508, in _prepare_and_execute
+    await adapt_connection._start_transaction()
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 837, in _start_transaction
+    self._handle_exception(error)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 784, in _handle_exception
+    raise translated_error from error
+sqlalchemy.exc.InterfaceError: (sqlalchemy.dialects.postgresql.asyncpg.InterfaceError) <class 'asyncpg.exceptions._base.InterfaceError'>: cannot perform operation: another operation is in progress
+[SQL: SELECT movies.id, movies.title, movies.genre, movies.director, movies.release_year 
+FROM movies]
+(Background on this error at: https://sqlalche.me/e/20/rvf5)
+2024-09-26 16:00:59,556 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2024-09-26 16:00:59,557 - sqlalchemy.engine.Engine - INFO - SELECT movies.id, movies.title, movies.genre, movies.director, movies.release_year 
+FROM movies 
+WHERE movies.genre = $1::VARCHAR
+2024-09-26 16:00:59,558 - sqlalchemy.engine.Engine - INFO - [generated in 0.00068s] ('Action',)
+2024-09-26 16:00:59,559 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2024-09-26 16:00:59,559 - Movie-API - CRITICAL - Unhandled Exception: (sqlalchemy.dialects.postgresql.asyncpg.InterfaceError) <class 'asyncpg.exceptions._base.InterfaceError'>: cannot perform operation: another operation is in progress
+[SQL: SELECT movies.id, movies.title, movies.genre, movies.director, movies.release_year 
+FROM movies 
+WHERE movies.genre = $1::VARCHAR]
+[parameters: ('Action',)]
+(Background on this error at: https://sqlalche.me/e/20/rvf5)
+Traceback (most recent call last):
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 835, in _start_transaction
+    await self._transaction.start()
+  File "C:\git\MovieAPI\venv\Lib\site-packages\asyncpg\transaction.py", line 146, in start
+    await self._connection.execute(query)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\asyncpg\connection.py", line 350, in execute
+    result = await self._protocol.query(query, timeout)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "asyncpg\protocol\protocol.pyx", line 359, in query
+  File "asyncpg\protocol\protocol.pyx", line 744, in asyncpg.protocol.protocol.BaseProtocol._check_state
+asyncpg.exceptions._base.InterfaceError: cannot perform operation: another operation is in progress
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\engine\default.py", line 941, in do_execute
+    cursor.execute(statement, parameters)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 572, in execute
+    self._adapt_connection.await_(
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 132, in await_only
+    return current.parent.switch(awaitable)  # type: ignore[no-any-return,attr-defined] # noqa: E501
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 196, in greenlet_spawn
+    value = await result
+            ^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 508, in _prepare_and_execute
+    await adapt_connection._start_transaction()
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 837, in _start_transaction
+    self._handle_exception(error)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 784, in _handle_exception
+    raise translated_error from error
+sqlalchemy.dialects.postgresql.asyncpg.AsyncAdapt_asyncpg_dbapi.InterfaceError: <class 'asyncpg.exceptions._base.InterfaceError'>: cannot perform operation: another operation is in progress
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\middleware\errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\_exception_handler.py", line 62, in wrapped_app
+    raise exc
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\_exception_handler.py", line 51, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\routing.py", line 715, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\routing.py", line 735, in app
+    await route.handle(scope, receive, send)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\_exception_handler.py", line 62, in wrapped_app
+    raise exc
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\_exception_handler.py", line 51, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\routing.py", line 73, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\fastapi\routing.py", line 301, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\fastapi\routing.py", line 212, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\app\api\v1\movies.py", line 86, in get_movies_by_genre
+    movies = await MovieService.get_movies_by_genre(genre, db)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\app\services\movies_services.py", line 64, in get_movies_by_genre
+    result = await db.execute(select(Movie).where(Movie.genre == genre))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\ext\asyncio\session.py", line 461, in execute
+    result = await greenlet_spawn(
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 201, in greenlet_spawn
+    result = context.throw(*sys.exc_info())
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2362, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2247, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\orm\context.py", line 305, in orm_execute_statement
+    result = conn.execute(
+             ^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1418, in execute
+    return meth(
+           ^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\sql\elements.py", line 515, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1640, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1846, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1986, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 2355, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\engine\default.py", line 941, in do_execute
+    cursor.execute(statement, parameters)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 572, in execute
+    self._adapt_connection.await_(
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 132, in await_only
+    return current.parent.switch(awaitable)  # type: ignore[no-any-return,attr-defined] # noqa: E501
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 196, in greenlet_spawn
+    value = await result
+            ^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 508, in _prepare_and_execute
+    await adapt_connection._start_transaction()
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 837, in _start_transaction
+    self._handle_exception(error)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 784, in _handle_exception
+    raise translated_error from error
+sqlalchemy.exc.InterfaceError: (sqlalchemy.dialects.postgresql.asyncpg.InterfaceError) <class 'asyncpg.exceptions._base.InterfaceError'>: cannot perform operation: another operation is in progress
+[SQL: SELECT movies.id, movies.title, movies.genre, movies.director, movies.release_year 
+FROM movies 
+WHERE movies.genre = $1::VARCHAR]
+[parameters: ('Action',)]
+(Background on this error at: https://sqlalche.me/e/20/rvf5)
+2024-09-26 16:00:59,570 - Movie-API - WARNING - Validation Error: [{'type': 'missing', 'loc': ('body', 'id'), 'msg': 'Field required', 'input': {'title': 'Updated Movie', 'genre': 'Action'}}, {'type': 'missing', 'loc': ('body', 'director'), 'msg': 'Field required', 'input': {'title': 'Updated Movie', 'genre': 'Action'}}, {'type': 'missing', 'loc': ('body', 'release_year'), 'msg': 'Field required', 'input': {'title': 'Updated Movie', 'genre': 'Action'}}]
+2024-09-26 16:00:59,571 - httpx - INFO - HTTP Request: PUT http://test/v1/movies/1 "HTTP/1.1 422 Unprocessable Entity"
+2024-09-26 16:36:52,234 - Movie-API - WARNING - Validation Error: [{'type': 'missing', 'loc': ('body', 'id'), 'msg': 'Field required', 'input': {'title': 'Test Movie', 'genre': 'Action'}}, {'type': 'missing', 'loc': ('body', 'director'), 'msg': 'Field required', 'input': {'title': 'Test Movie', 'genre': 'Action'}}, {'type': 'missing', 'loc': ('body', 'release_year'), 'msg': 'Field required', 'input': {'title': 'Test Movie', 'genre': 'Action'}}]
+2024-09-26 16:36:52,234 - httpx - INFO - HTTP Request: POST http://localhost:8000/v1/movies/ "HTTP/1.1 422 Unprocessable Entity"
+2024-09-26 16:36:52,256 - sqlalchemy.engine.Engine - INFO - select pg_catalog.version()
+2024-09-26 16:36:52,256 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+2024-09-26 16:36:52,258 - sqlalchemy.engine.Engine - INFO - select current_schema()
+2024-09-26 16:36:52,258 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+2024-09-26 16:36:52,261 - sqlalchemy.engine.Engine - INFO - show standard_conforming_strings
+2024-09-26 16:36:52,262 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+2024-09-26 16:36:52,264 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2024-09-26 16:36:52,266 - sqlalchemy.engine.Engine - INFO - SELECT movies.id, movies.title, movies.genre, movies.director, movies.release_year 
+FROM movies 
+WHERE movies.id = $1::INTEGER
+2024-09-26 16:36:52,267 - sqlalchemy.engine.Engine - INFO - [generated in 0.00073s] (1,)
+2024-09-26 16:36:52,270 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2024-09-26 16:36:52,271 - httpx - INFO - HTTP Request: DELETE http://localhost:8000/v1/movies/1 "HTTP/1.1 404 Not Found"
+2024-09-26 16:36:52,275 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2024-09-26 16:36:52,276 - sqlalchemy.engine.Engine - INFO - SELECT movies.id, movies.title, movies.genre, movies.director, movies.release_year 
+FROM movies 
+WHERE movies.id = $1::INTEGER
+2024-09-26 16:36:52,276 - sqlalchemy.engine.Engine - INFO - [cached since 0.01025s ago] (1,)
+2024-09-26 16:36:52,277 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2024-09-26 16:36:52,277 - Movie-API - CRITICAL - Unhandled Exception: 'NoneType' object has no attribute 'send'
+Traceback (most recent call last):
+  File "C:\Users\cpanda\AppData\Local\Programs\Python\Python311\Lib\asyncio\base_events.py", line 761, in call_soon
+    self._check_closed()
+  File "C:\Users\cpanda\AppData\Local\Programs\Python\Python311\Lib\asyncio\base_events.py", line 519, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\middleware\errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\_exception_handler.py", line 62, in wrapped_app
+    raise exc
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\_exception_handler.py", line 51, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\routing.py", line 715, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\routing.py", line 735, in app
+    await route.handle(scope, receive, send)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\_exception_handler.py", line 62, in wrapped_app
+    raise exc
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\_exception_handler.py", line 51, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\routing.py", line 73, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\fastapi\routing.py", line 301, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\fastapi\routing.py", line 212, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\app\api\v1\movies.py", line 65, in get_movie
+    movie = await MovieService.get_movie_by_id(movie_id, db)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\app\services\movies_services.py", line 30, in get_movie_by_id
+    result = await db.execute(select(Movie).where(Movie.id == movie_id))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\ext\asyncio\session.py", line 461, in execute
+    result = await greenlet_spawn(
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 201, in greenlet_spawn
+    result = context.throw(*sys.exc_info())
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2362, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2247, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\orm\context.py", line 305, in orm_execute_statement
+    result = conn.execute(
+             ^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1418, in execute
+    return meth(
+           ^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\sql\elements.py", line 515, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1640, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1846, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1986, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 2358, in _handle_dbapi_exception
+    raise exc_info[1].with_traceback(exc_info[2])
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\engine\default.py", line 941, in do_execute
+    cursor.execute(statement, parameters)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 572, in execute
+    self._adapt_connection.await_(
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 132, in await_only
+    return current.parent.switch(awaitable)  # type: ignore[no-any-return,attr-defined] # noqa: E501
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 196, in greenlet_spawn
+    value = await result
+            ^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 508, in _prepare_and_execute
+    await adapt_connection._start_transaction()
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 837, in _start_transaction
+    self._handle_exception(error)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 786, in _handle_exception
+    raise error
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 835, in _start_transaction
+    await self._transaction.start()
+  File "C:\git\MovieAPI\venv\Lib\site-packages\asyncpg\transaction.py", line 146, in start
+    await self._connection.execute(query)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\asyncpg\connection.py", line 350, in execute
+    result = await self._protocol.query(query, timeout)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "asyncpg\protocol\protocol.pyx", line 374, in query
+  File "asyncpg\protocol\protocol.pyx", line 367, in asyncpg.protocol.protocol.BaseProtocol.query
+  File "asyncpg\protocol\coreproto.pyx", line 1094, in asyncpg.protocol.protocol.CoreProtocol._simple_query
+  File "asyncpg\protocol\protocol.pyx", line 966, in asyncpg.protocol.protocol.BaseProtocol._write
+  File "C:\Users\cpanda\AppData\Local\Programs\Python\Python311\Lib\asyncio\proactor_events.py", line 365, in write
+    self._loop_writing(data=bytes(data))
+  File "C:\Users\cpanda\AppData\Local\Programs\Python\Python311\Lib\asyncio\proactor_events.py", line 401, in _loop_writing
+    self._write_fut = self._loop._proactor.send(self._sock, data)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'send'
+2024-09-26 16:36:52,292 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2024-09-26 16:36:52,293 - sqlalchemy.engine.Engine - INFO - SELECT movies.id, movies.title, movies.genre, movies.director, movies.release_year 
+FROM movies
+2024-09-26 16:36:52,293 - sqlalchemy.engine.Engine - INFO - [generated in 0.00047s] ()
+2024-09-26 16:36:52,294 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2024-09-26 16:36:52,295 - Movie-API - CRITICAL - Unhandled Exception: (sqlalchemy.dialects.postgresql.asyncpg.InterfaceError) <class 'asyncpg.exceptions._base.InterfaceError'>: cannot perform operation: another operation is in progress
+[SQL: SELECT movies.id, movies.title, movies.genre, movies.director, movies.release_year 
+FROM movies]
+(Background on this error at: https://sqlalche.me/e/20/rvf5)
+Traceback (most recent call last):
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 835, in _start_transaction
+    await self._transaction.start()
+  File "C:\git\MovieAPI\venv\Lib\site-packages\asyncpg\transaction.py", line 146, in start
+    await self._connection.execute(query)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\asyncpg\connection.py", line 350, in execute
+    result = await self._protocol.query(query, timeout)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "asyncpg\protocol\protocol.pyx", line 359, in query
+  File "asyncpg\protocol\protocol.pyx", line 744, in asyncpg.protocol.protocol.BaseProtocol._check_state
+asyncpg.exceptions._base.InterfaceError: cannot perform operation: another operation is in progress
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\engine\default.py", line 941, in do_execute
+    cursor.execute(statement, parameters)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 572, in execute
+    self._adapt_connection.await_(
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 132, in await_only
+    return current.parent.switch(awaitable)  # type: ignore[no-any-return,attr-defined] # noqa: E501
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 196, in greenlet_spawn
+    value = await result
+            ^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 508, in _prepare_and_execute
+    await adapt_connection._start_transaction()
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 837, in _start_transaction
+    self._handle_exception(error)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 784, in _handle_exception
+    raise translated_error from error
+sqlalchemy.dialects.postgresql.asyncpg.AsyncAdapt_asyncpg_dbapi.InterfaceError: <class 'asyncpg.exceptions._base.InterfaceError'>: cannot perform operation: another operation is in progress
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\middleware\errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\_exception_handler.py", line 62, in wrapped_app
+    raise exc
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\_exception_handler.py", line 51, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\routing.py", line 715, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\routing.py", line 735, in app
+    await route.handle(scope, receive, send)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\_exception_handler.py", line 62, in wrapped_app
+    raise exc
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\_exception_handler.py", line 51, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\routing.py", line 73, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\fastapi\routing.py", line 301, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\fastapi\routing.py", line 212, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\app\api\v1\movies.py", line 44, in get_movies
+    return await MovieService.get_all_movies(db)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\app\services\movies_services.py", line 23, in get_all_movies
+    result = await db.execute(select(Movie))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\ext\asyncio\session.py", line 461, in execute
+    result = await greenlet_spawn(
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 201, in greenlet_spawn
+    result = context.throw(*sys.exc_info())
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2362, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2247, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\orm\context.py", line 305, in orm_execute_statement
+    result = conn.execute(
+             ^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1418, in execute
+    return meth(
+           ^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\sql\elements.py", line 515, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1640, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1846, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1986, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 2355, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\engine\default.py", line 941, in do_execute
+    cursor.execute(statement, parameters)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 572, in execute
+    self._adapt_connection.await_(
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 132, in await_only
+    return current.parent.switch(awaitable)  # type: ignore[no-any-return,attr-defined] # noqa: E501
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 196, in greenlet_spawn
+    value = await result
+            ^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 508, in _prepare_and_execute
+    await adapt_connection._start_transaction()
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 837, in _start_transaction
+    self._handle_exception(error)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 784, in _handle_exception
+    raise translated_error from error
+sqlalchemy.exc.InterfaceError: (sqlalchemy.dialects.postgresql.asyncpg.InterfaceError) <class 'asyncpg.exceptions._base.InterfaceError'>: cannot perform operation: another operation is in progress
+[SQL: SELECT movies.id, movies.title, movies.genre, movies.director, movies.release_year 
+FROM movies]
+(Background on this error at: https://sqlalche.me/e/20/rvf5)
+2024-09-26 16:36:52,303 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2024-09-26 16:36:52,304 - sqlalchemy.engine.Engine - INFO - SELECT movies.id, movies.title, movies.genre, movies.director, movies.release_year 
+FROM movies 
+WHERE movies.genre = $1::VARCHAR
+2024-09-26 16:36:52,305 - sqlalchemy.engine.Engine - INFO - [generated in 0.00068s] ('Action',)
+2024-09-26 16:36:52,305 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2024-09-26 16:36:52,306 - Movie-API - CRITICAL - Unhandled Exception: (sqlalchemy.dialects.postgresql.asyncpg.InterfaceError) <class 'asyncpg.exceptions._base.InterfaceError'>: cannot perform operation: another operation is in progress
+[SQL: SELECT movies.id, movies.title, movies.genre, movies.director, movies.release_year 
+FROM movies 
+WHERE movies.genre = $1::VARCHAR]
+[parameters: ('Action',)]
+(Background on this error at: https://sqlalche.me/e/20/rvf5)
+Traceback (most recent call last):
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 835, in _start_transaction
+    await self._transaction.start()
+  File "C:\git\MovieAPI\venv\Lib\site-packages\asyncpg\transaction.py", line 146, in start
+    await self._connection.execute(query)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\asyncpg\connection.py", line 350, in execute
+    result = await self._protocol.query(query, timeout)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "asyncpg\protocol\protocol.pyx", line 359, in query
+  File "asyncpg\protocol\protocol.pyx", line 744, in asyncpg.protocol.protocol.BaseProtocol._check_state
+asyncpg.exceptions._base.InterfaceError: cannot perform operation: another operation is in progress
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\engine\default.py", line 941, in do_execute
+    cursor.execute(statement, parameters)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 572, in execute
+    self._adapt_connection.await_(
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 132, in await_only
+    return current.parent.switch(awaitable)  # type: ignore[no-any-return,attr-defined] # noqa: E501
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 196, in greenlet_spawn
+    value = await result
+            ^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 508, in _prepare_and_execute
+    await adapt_connection._start_transaction()
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 837, in _start_transaction
+    self._handle_exception(error)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 784, in _handle_exception
+    raise translated_error from error
+sqlalchemy.dialects.postgresql.asyncpg.AsyncAdapt_asyncpg_dbapi.InterfaceError: <class 'asyncpg.exceptions._base.InterfaceError'>: cannot perform operation: another operation is in progress
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\middleware\errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\_exception_handler.py", line 62, in wrapped_app
+    raise exc
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\_exception_handler.py", line 51, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\routing.py", line 715, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\routing.py", line 735, in app
+    await route.handle(scope, receive, send)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\_exception_handler.py", line 62, in wrapped_app
+    raise exc
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\_exception_handler.py", line 51, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\starlette\routing.py", line 73, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\fastapi\routing.py", line 301, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\fastapi\routing.py", line 212, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\app\api\v1\movies.py", line 86, in get_movies_by_genre
+    movies = await MovieService.get_movies_by_genre(genre, db)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\app\services\movies_services.py", line 64, in get_movies_by_genre
+    result = await db.execute(select(Movie).where(Movie.genre == genre))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\ext\asyncio\session.py", line 461, in execute
+    result = await greenlet_spawn(
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 201, in greenlet_spawn
+    result = context.throw(*sys.exc_info())
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2362, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2247, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\orm\context.py", line 305, in orm_execute_statement
+    result = conn.execute(
+             ^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1418, in execute
+    return meth(
+           ^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\sql\elements.py", line 515, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1640, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1846, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1986, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 2355, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\engine\default.py", line 941, in do_execute
+    cursor.execute(statement, parameters)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 572, in execute
+    self._adapt_connection.await_(
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 132, in await_only
+    return current.parent.switch(awaitable)  # type: ignore[no-any-return,attr-defined] # noqa: E501
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 196, in greenlet_spawn
+    value = await result
+            ^^^^^^^^^^^^
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 508, in _prepare_and_execute
+    await adapt_connection._start_transaction()
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 837, in _start_transaction
+    self._handle_exception(error)
+  File "C:\git\MovieAPI\venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 784, in _handle_exception
+    raise translated_error from error
+sqlalchemy.exc.InterfaceError: (sqlalchemy.dialects.postgresql.asyncpg.InterfaceError) <class 'asyncpg.exceptions._base.InterfaceError'>: cannot perform operation: another operation is in progress
+[SQL: SELECT movies.id, movies.title, movies.genre, movies.director, movies.release_year 
+FROM movies 
+WHERE movies.genre = $1::VARCHAR]
+[parameters: ('Action',)]
+(Background on this error at: https://sqlalche.me/e/20/rvf5)
+2024-09-26 16:36:52,317 - Movie-API - WARNING - Validation Error: [{'type': 'missing', 'loc': ('body', 'id'), 'msg': 'Field required', 'input': {'title': 'Updated Movie', 'genre': 'Action'}}, {'type': 'missing', 'loc': ('body', 'director'), 'msg': 'Field required', 'input': {'title': 'Updated Movie', 'genre': 'Action'}}, {'type': 'missing', 'loc': ('body', 'release_year'), 'msg': 'Field required', 'input': {'title': 'Updated Movie', 'genre': 'Action'}}]
+2024-09-26 16:36:52,317 - httpx - INFO - HTTP Request: PUT http://localhost:8000/v1/movies/1 "HTTP/1.1 422 Unprocessable Entity"
+2024-09-26 16:37:11,047 - Movie-API - WARNING - Validation Error: [{'type': 'missing', 'loc': ('body', 'id'), 'msg': 'Field required', 'input': {'title': 'Test Movie', 'genre': 'Action'}}, {'type': 'missing', 'loc': ('body', 'director'), 'msg': 'Field required', 'input': {'title': 'Test Movie', 'genre': 'Action'}}, {'type': 'missing', 'loc': ('body', 'release_year'), 'msg': 'Field required', 'input': {'title': 'Test Movie', 'genre': 'Action'}}]
+2024-09-26 16:37:11,048 - httpx - INFO - HTTP Request: POST http://localhost:8000/v1/movies/ "HTTP/1.1 422 Unprocessable Entity"
+2024-09-26 16:37:32,558 - Movie-API - WARNING - Validation Error: [{'type': 'missing', 'loc': ('body', 'id'), 'msg': 'Field required', 'input': {'title': 'Test Movie', 'genre': 'Action'}}, {'type': 'missing', 'loc': ('body', 'director'), 'msg': 'Field required', 'input': {'title': 'Test Movie', 'genre': 'Action'}}, {'type': 'missing', 'loc': ('body', 'release_year'), 'msg': 'Field required', 'input': {'title': 'Test Movie', 'genre': 'Action'}}]
+2024-09-26 16:37:32,559 - httpx - INFO - HTTP Request: POST http://localhost:8000/v1/movies/ "HTTP/1.1 422 Unprocessable Entity"
+2024-09-26 16:38:06,738 - sqlalchemy.engine.Engine - INFO - select pg_catalog.version()
+2024-09-26 16:38:06,739 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+2024-09-26 16:38:06,742 - sqlalchemy.engine.Engine - INFO - select current_schema()
+2024-09-26 16:38:06,742 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+2024-09-26 16:38:06,744 - sqlalchemy.engine.Engine - INFO - show standard_conforming_strings
+2024-09-26 16:38:06,745 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+2024-09-26 16:38:06,747 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2024-09-26 16:38:06,749 - sqlalchemy.engine.Engine - INFO - SELECT movies.id, movies.title, movies.genre, movies.director, movies.release_year 
+FROM movies 
+WHERE movies.title = $1::VARCHAR
+2024-09-26 16:38:06,749 - sqlalchemy.engine.Engine - INFO - [generated in 0.00060s] ('Test Movie',)
+2024-09-26 16:38:06,753 - sqlalchemy.engine.Engine - INFO - INSERT INTO movies (id, title, genre, director, release_year) VALUES ($1::INTEGER, $2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::INTEGER)
+2024-09-26 16:38:06,753 - sqlalchemy.engine.Engine - INFO - [generated in 0.00049s] (1, 'Test Movie', 'Horror', 'Test Director', 2021)
+2024-09-26 16:38:06,756 - sqlalchemy.engine.Engine - INFO - COMMIT
+2024-09-26 16:38:06,760 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2024-09-26 16:38:06,760 - sqlalchemy.engine.Engine - INFO - SELECT movies.id, movies.title, movies.genre, movies.director, movies.release_year 
+FROM movies 
+WHERE movies.id = $1::INTEGER
+2024-09-26 16:38:06,761 - sqlalchemy.engine.Engine - INFO - [generated in 0.00057s] (1,)
+2024-09-26 16:38:06,763 - Movie-API - INFO - Movie 'Test Movie' created successfully.
+2024-09-26 16:38:06,764 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2024-09-26 16:38:06,765 - httpx - INFO - HTTP Request: POST http://localhost:8000/v1/movies/ "HTTP/1.1 200 OK"
+2024-09-26 16:39:08,352 - sqlalchemy.engine.Engine - INFO - select pg_catalog.version()
+2024-09-26 16:39:08,354 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+2024-09-26 16:39:08,357 - sqlalchemy.engine.Engine - INFO - select current_schema()
+2024-09-26 16:39:08,358 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+2024-09-26 16:39:08,361 - sqlalchemy.engine.Engine - INFO - show standard_conforming_strings
+2024-09-26 16:39:08,362 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+2024-09-26 16:39:08,364 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2024-09-26 16:39:08,365 - sqlalchemy.engine.Engine - INFO - SELECT movies.id, movies.title, movies.genre, movies.director, movies.release_year 
+FROM movies 
+WHERE movies.title = $1::VARCHAR
+2024-09-26 16:39:08,366 - sqlalchemy.engine.Engine - INFO - [generated in 0.00057s] ('Test Movie',)
+2024-09-26 16:39:08,369 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2024-09-26 16:39:08,371 - httpx - INFO - HTTP Request: POST http://localhost:8000/v1/movies/ "HTTP/1.1 400 Bad Request"
+2024-09-26 16:39:19,504 - sqlalchemy.engine.Engine - INFO - select pg_catalog.version()
+2024-09-26 16:39:19,505 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+2024-09-26 16:39:19,507 - sqlalchemy.engine.Engine - INFO - select current_schema()
+2024-09-26 16:39:19,508 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+2024-09-26 16:39:19,510 - sqlalchemy.engine.Engine - INFO - show standard_conforming_strings
+2024-09-26 16:39:19,511 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+2024-09-26 16:39:19,513 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2024-09-26 16:39:19,515 - sqlalchemy.engine.Engine - INFO - SELECT movies.id, movies.title, movies.genre, movies.director, movies.release_year 
+FROM movies 
+WHERE movies.title = $1::VARCHAR
+2024-09-26 16:39:19,515 - sqlalchemy.engine.Engine - INFO - [generated in 0.00056s] ('Test Movie',)
+2024-09-26 16:39:19,518 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2024-09-26 16:39:19,520 - httpx - INFO - HTTP Request: POST http://localhost:8000/v1/movies/ "HTTP/1.1 400 Bad Request"
+2024-09-26 16:41:57,795 - sqlalchemy.engine.Engine - INFO - select pg_catalog.version()
+2024-09-26 16:41:57,795 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+2024-09-26 16:41:57,799 - sqlalchemy.engine.Engine - INFO - select current_schema()
+2024-09-26 16:41:57,799 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+2024-09-26 16:41:57,802 - sqlalchemy.engine.Engine - INFO - show standard_conforming_strings
+2024-09-26 16:41:57,802 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+2024-09-26 16:41:57,804 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2024-09-26 16:41:57,806 - sqlalchemy.engine.Engine - INFO - SELECT movies.id, movies.title, movies.genre, movies.director, movies.release_year 
+FROM movies 
+WHERE movies.title = $1::VARCHAR
+2024-09-26 16:41:57,806 - sqlalchemy.engine.Engine - INFO - [generated in 0.00069s] ('Test Movie',)
+2024-09-26 16:41:57,810 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2024-09-26 16:41:57,811 - httpx - INFO - HTTP Request: POST http://localhost:8000/v1/movies/ "HTTP/1.1 400 Bad Request"
+2024-09-26 16:44:12,327 - sqlalchemy.engine.Engine - INFO - select pg_catalog.version()
+2024-09-26 16:44:12,328 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+2024-09-26 16:44:12,332 - sqlalchemy.engine.Engine - INFO - select current_schema()
+2024-09-26 16:44:12,333 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+2024-09-26 16:44:12,337 - sqlalchemy.engine.Engine - INFO - show standard_conforming_strings
+2024-09-26 16:44:12,337 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+2024-09-26 16:44:12,340 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2024-09-26 16:44:12,344 - sqlalchemy.engine.Engine - INFO - SELECT movies.id, movies.title, movies.genre, movies.director, movies.release_year 
+FROM movies 
+WHERE movies.title = $1::VARCHAR
+2024-09-26 16:44:12,344 - sqlalchemy.engine.Engine - INFO - [generated in 0.00060s] ('Test Movie',)
+2024-09-26 16:44:12,348 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2024-09-26 16:44:12,350 - httpx - INFO - HTTP Request: POST http://localhost:8000/v1/movies/ "HTTP/1.1 400 Bad Request"
+2024-09-26 16:46:33,144 - httpx - INFO - HTTP Request: POST http://localhost:8000/v1/movies/ "HTTP/1.1 200 OK"
+2024-09-26 16:46:51,722 - httpx - INFO - HTTP Request: POST http://localhost:8000/v1/movies/ "HTTP/1.1 200 OK"
+2024-09-26 17:10:07,401 - httpx - INFO - HTTP Request: POST http://localhost:8000/v1/movies/ "HTTP/1.1 200 OK"
+2024-09-26 17:10:07,404 - httpx - INFO - HTTP Request: DELETE http://localhost:8000/v1/movies/1 "HTTP/1.1 200 OK"
+2024-09-26 17:10:07,407 - httpx - INFO - HTTP Request: GET http://localhost:8000/v1/movies/1 "HTTP/1.1 200 OK"
+2024-09-26 17:10:07,409 - httpx - INFO - HTTP Request: GET http://localhost:8000/v1/movies/ "HTTP/1.1 200 OK"
+2024-09-26 17:10:07,412 - httpx - INFO - HTTP Request: GET http://localhost:8000/v1/movies/genre/Action "HTTP/1.1 200 OK"
+2024-09-26 17:10:07,415 - Movie-API - WARNING - Validation Error: [{'type': 'missing', 'loc': ('body', 'id'), 'msg': 'Field required', 'input': {'title': 'Updated Movie', 'genre': 'Action'}}, {'type': 'missing', 'loc': ('body', 'director'), 'msg': 'Field required', 'input': {'title': 'Updated Movie', 'genre': 'Action'}}, {'type': 'missing', 'loc': ('body', 'release_year'), 'msg': 'Field required', 'input': {'title': 'Updated Movie', 'genre': 'Action'}}]
+2024-09-26 17:10:07,415 - httpx - INFO - HTTP Request: PUT http://localhost:8000/v1/movies/1 "HTTP/1.1 422 Unprocessable Entity"
+2024-09-26 17:12:02,774 - httpx - INFO - HTTP Request: POST http://localhost:8000/v1/movies/ "HTTP/1.1 200 OK"
+2024-09-26 17:12:02,778 - httpx - INFO - HTTP Request: DELETE http://localhost:8000/v1/movies/1 "HTTP/1.1 200 OK"
+2024-09-26 17:12:02,798 - httpx - INFO - HTTP Request: GET http://localhost:8000/v1/movies/1 "HTTP/1.1 200 OK"
+2024-09-26 17:12:02,800 - httpx - INFO - HTTP Request: GET http://localhost:8000/v1/movies/ "HTTP/1.1 200 OK"
+2024-09-26 17:12:02,804 - httpx - INFO - HTTP Request: GET http://localhost:8000/v1/movies/genre/Action "HTTP/1.1 200 OK"
+2024-09-26 17:12:02,810 - httpx - INFO - HTTP Request: PUT http://localhost:8000/v1/movies/1 "HTTP/1.1 200 OK"
+2024-09-26 17:12:12,377 - httpx - INFO - HTTP Request: POST http://localhost:8000/v1/movies/ "HTTP/1.1 200 OK"
+2024-09-26 17:12:12,379 - httpx - INFO - HTTP Request: DELETE http://localhost:8000/v1/movies/1 "HTTP/1.1 200 OK"
+2024-09-26 17:12:12,382 - httpx - INFO - HTTP Request: GET http://localhost:8000/v1/movies/1 "HTTP/1.1 200 OK"
+2024-09-26 17:12:12,402 - httpx - INFO - HTTP Request: GET http://localhost:8000/v1/movies/ "HTTP/1.1 200 OK"
+2024-09-26 17:12:12,405 - httpx - INFO - HTTP Request: GET http://localhost:8000/v1/movies/genre/Action "HTTP/1.1 200 OK"
+2024-09-26 17:12:12,419 - httpx - INFO - HTTP Request: PUT http://localhost:8000/v1/movies/1 "HTTP/1.1 200 OK"
