@@ -1,10 +1,13 @@
-import unittest
 import asyncio
+import unittest
 from unittest.mock import patch, AsyncMock
-from httpx import AsyncClient, ASGITransport
+
 from fastapi import status
+from httpx import AsyncClient, ASGITransport
+
 from app.main import app
 from app.models.movie import Movie
+
 
 class TestMoviesAPI(unittest.TestCase):
     payload = {

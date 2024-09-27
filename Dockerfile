@@ -1,25 +1,28 @@
+ARG PYTHON_VERSION=3.11-slim
 # First stage: build the application
-FROM python:3.10-slim as builder
+FROM python:${PYTHON_VERSION} AS builder
 
 WORKDIR /app
 
-# Install dependencies
+ENV PYTHONUNBUFFERED=1
+
 COPY requirements.txt .
+
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the application code
 COPY . .
 
 # Second stage: create the final image
-FROM python:3.10-slim
+FROM python:${PYTHON_VERSION}
+
+ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
 # Copy only the necessary files from the builder stage
-COPY --from=builder /app /app
+COPY --from=builder /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
+COPY --from=builder /app .
 
-# Expose the application port
 EXPOSE 8000
 
-# Command to run the application
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+CMD ["python", "start.py"]

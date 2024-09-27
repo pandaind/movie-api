@@ -968,3 +968,39 @@ WHERE movies.title = $1::VARCHAR
 2024-09-26 17:12:12,402 - httpx - INFO - HTTP Request: GET http://localhost:8000/v1/movies/ "HTTP/1.1 200 OK"
 2024-09-26 17:12:12,405 - httpx - INFO - HTTP Request: GET http://localhost:8000/v1/movies/genre/Action "HTTP/1.1 200 OK"
 2024-09-26 17:12:12,419 - httpx - INFO - HTTP Request: PUT http://localhost:8000/v1/movies/1 "HTTP/1.1 200 OK"
+2024-09-27 20:08:30,290 - apscheduler.scheduler - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2024-09-27 20:08:30,298 - app.main - INFO - Application startup...
+2024-09-27 20:08:30,299 - apscheduler.scheduler - INFO - Added job "print_job" to job store "default"
+2024-09-27 20:08:30,299 - apscheduler.scheduler - INFO - Scheduler started
+2024-09-27 20:08:32,000 - apscheduler.executors.default - INFO - Running job "print_job (trigger: cron[second='0/2'], next run at: 2024-09-27 20:08:32 IST)" (scheduled at 2024-09-27 20:08:32+05:30)
+2024-09-27 20:08:32,001 - apscheduler.executors.default - INFO - Job "print_job (trigger: cron[second='0/2'], next run at: 2024-09-27 20:08:34 IST)" executed successfully
+2024-09-27 20:08:34,000 - apscheduler.executors.default - INFO - Running job "print_job (trigger: cron[second='0/2'], next run at: 2024-09-27 20:08:36 IST)" (scheduled at 2024-09-27 20:08:34+05:30)
+2024-09-27 20:08:34,000 - apscheduler.executors.default - INFO - Job "print_job (trigger: cron[second='0/2'], next run at: 2024-09-27 20:08:36 IST)" executed successfully
+2024-09-27 20:08:36,000 - apscheduler.executors.default - INFO - Running job "print_job (trigger: cron[second='0/2'], next run at: 2024-09-27 20:08:38 IST)" (scheduled at 2024-09-27 20:08:36+05:30)
+2024-09-27 20:08:36,000 - apscheduler.executors.default - INFO - Job "print_job (trigger: cron[second='0/2'], next run at: 2024-09-27 20:08:38 IST)" executed successfully
+2024-09-27 20:08:38,000 - apscheduler.executors.default - INFO - Running job "print_job (trigger: cron[second='0/2'], next run at: 2024-09-27 20:08:40 IST)" (scheduled at 2024-09-27 20:08:38+05:30)
+2024-09-27 20:08:38,000 - apscheduler.executors.default - INFO - Job "print_job (trigger: cron[second='0/2'], next run at: 2024-09-27 20:08:40 IST)" executed successfully
+2024-09-27 20:08:40,000 - apscheduler.executors.default - INFO - Running job "print_job (trigger: cron[second='0/2'], next run at: 2024-09-27 20:08:42 IST)" (scheduled at 2024-09-27 20:08:40+05:30)
+2024-09-27 20:08:40,000 - apscheduler.executors.default - INFO - Job "print_job (trigger: cron[second='0/2'], next run at: 2024-09-27 20:08:42 IST)" executed successfully
+2024-09-27 20:08:42,000 - apscheduler.executors.default - INFO - Running job "print_job (trigger: cron[second='0/2'], next run at: 2024-09-27 20:08:44 IST)" (scheduled at 2024-09-27 20:08:42+05:30)
+2024-09-27 20:08:42,000 - apscheduler.executors.default - INFO - Job "print_job (trigger: cron[second='0/2'], next run at: 2024-09-27 20:08:44 IST)" executed successfully
+2024-09-27 20:08:44,000 - apscheduler.executors.default - INFO - Running job "print_job (trigger: cron[second='0/2'], next run at: 2024-09-27 20:08:46 IST)" (scheduled at 2024-09-27 20:08:44+05:30)
+2024-09-27 20:08:44,000 - apscheduler.executors.default - INFO - Job "print_job (trigger: cron[second='0/2'], next run at: 2024-09-27 20:08:46 IST)" executed successfully
+2024-09-27 20:08:46,000 - apscheduler.executors.default - INFO - Running job "print_job (trigger: cron[second='0/2'], next run at: 2024-09-27 20:08:48 IST)" (scheduled at 2024-09-27 20:08:46+05:30)
+2024-09-27 20:08:46,000 - apscheduler.executors.default - INFO - Job "print_job (trigger: cron[second='0/2'], next run at: 2024-09-27 20:08:48 IST)" executed successfully
+2024-09-27 20:08:47,954 - app.main - INFO - Application shutdown...
+2024-09-27 20:08:47,954 - apscheduler.scheduler - INFO - Scheduler has been shut down
+2024-09-27 22:46:30,345 - apscheduler.scheduler - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2024-09-27 22:46:30,409 - httpx - INFO - HTTP Request: POST http://localhost:8000/v1/movies/ "HTTP/1.1 200 OK"
+2024-09-27 22:46:30,412 - httpx - INFO - HTTP Request: DELETE http://localhost:8000/v1/movies/1 "HTTP/1.1 200 OK"
+2024-09-27 22:46:30,416 - httpx - INFO - HTTP Request: GET http://localhost:8000/v1/movies/1 "HTTP/1.1 200 OK"
+2024-09-27 22:46:30,420 - httpx - INFO - HTTP Request: GET http://localhost:8000/v1/movies/ "HTTP/1.1 200 OK"
+2024-09-27 22:46:30,423 - httpx - INFO - HTTP Request: GET http://localhost:8000/v1/movies/genre/Action "HTTP/1.1 200 OK"
+2024-09-27 22:46:30,427 - httpx - INFO - HTTP Request: PUT http://localhost:8000/v1/movies/1 "HTTP/1.1 200 OK"
+2024-09-27 23:20:08,463 - apscheduler.scheduler - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2024-09-27 23:20:08,533 - httpx - INFO - HTTP Request: POST http://localhost:8000/v1/movies/ "HTTP/1.1 200 OK"
+2024-09-27 23:20:08,536 - httpx - INFO - HTTP Request: DELETE http://localhost:8000/v1/movies/1 "HTTP/1.1 200 OK"
+2024-09-27 23:20:08,539 - httpx - INFO - HTTP Request: GET http://localhost:8000/v1/movies/1 "HTTP/1.1 200 OK"
+2024-09-27 23:20:08,542 - httpx - INFO - HTTP Request: GET http://localhost:8000/v1/movies/ "HTTP/1.1 200 OK"
+2024-09-27 23:20:08,545 - httpx - INFO - HTTP Request: GET http://localhost:8000/v1/movies/genre/Action "HTTP/1.1 200 OK"
+2024-09-27 23:20:08,550 - httpx - INFO - HTTP Request: PUT http://localhost:8000/v1/movies/1 "HTTP/1.1 200 OK"

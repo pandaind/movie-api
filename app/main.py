@@ -14,7 +14,6 @@ from app.core.exceptions import (
     http_exception_handler,
     unhandled_exception_handler,
 )
-from app.db.database import init_db
 from app.jobs.scheduler_jobs import scheduler
 
 # Configure logging
