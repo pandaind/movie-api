@@ -24,7 +24,7 @@ services:
     depends_on:
       - postgres
     environment:
-      # Change localhost to the service name postgres_db
+      ENVIRONMENT: development
       DATABASE_URL: "postgresql+asyncpg://movie_api_user:movie_api_pass@postgres_db:5432/movie_api_db"
     networks:
       - movie_api_network
