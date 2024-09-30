@@ -38,11 +38,17 @@ class UserCreate(BaseModel):
     username: str
     email: EmailStr
     password: str
+    model_config = {
+        "from_attributes": True  # Allows SQLAlchemy models to be converted to Pydantic models
+    }
 
 
 class UserCreateResponse(BaseModel):
     username: str
     email: EmailStr
+    model_config = {
+        "from_attributes": True  # Allows SQLAlchemy models to be converted to Pydantic models
+    }
 
 
 class ResponseCreateUser(BaseModel):
@@ -50,3 +56,6 @@ class ResponseCreateUser(BaseModel):
         str, Field(default="user created")
     ]
     user: UserCreateResponse
+    model_config = {
+        "from_attributes": True  # Allows SQLAlchemy models to be converted to Pydantic models
+    }

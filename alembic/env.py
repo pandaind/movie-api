@@ -12,7 +12,8 @@ if config.config_file_name is not None:
 
 # target_metadata = None
 
-from app.models.movie import Base
+from app.models import user_role, movie  # Import all models
+from app.db.database import Base  # Updated import
 target_metadata = Base.metadata
 
 

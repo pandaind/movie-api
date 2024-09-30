@@ -1,7 +1,4 @@
-from email_validator import (
-    EmailNotValidError,
-    validate_email,
-)
+from email_validator import EmailNotValidError, validate_email
 from fastapi import HTTPException, APIRouter
 from fastapi.params import Depends
 from passlib.context import CryptContext
@@ -14,7 +11,6 @@ from app.models.user_role import ResponseCreateUser, UserCreate, UserCreateRespo
 
 router = APIRouter()
 
-
 @router.post(
     "/register",
     response_model=ResponseCreateUser,
@@ -24,7 +20,7 @@ router = APIRouter()
         }
     },
 )
-def register(user: UserCreate, session: AsyncSession = Depends(get_db())) -> dict[str, UserCreateResponse]:
+def register(user: UserCreate, session: AsyncSession = Depends(get_db)) -> dict[str, UserCreateResponse]:
     user = add_user(
         session=session, **user.model_dump()
     )
@@ -41,11 +37,9 @@ def register(user: UserCreate, session: AsyncSession = Depends(get_db())) -> dic
         "user": user_response,
     }
 
-
 pwd_context = CryptContext(
     schemes=["bcrypt"], deprecated="auto"
 )
-
 
 def add_user(
         session: AsyncSession,
@@ -70,12 +64,11 @@ def add_user(
         return
     return db_user
 
-
 async def get_user(session: AsyncSession, username_or_email: str) -> User | None:
     try:
         validate_email(username_or_email)
         query_filter = User.email
     except EmailNotValidError:
         query_filter = User.username
-    result = await session.execute (select(User).where(query_filter == username_or_email))
+    result = await session.execute(select(User).where(query_filter == username_or_email))
     return result.scalar_one_or_none()
