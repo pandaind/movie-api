@@ -4,7 +4,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException
 from fastapi.exceptions import RequestValidationError
 
-from app.api.v1 import movies
+from app.api.v1 import movies, users
 from app.core.exceptions import (
     MovieNotFoundException,
     MovieAlreadyExistsException,
@@ -14,6 +14,7 @@ from app.core.exceptions import (
     http_exception_handler,
     unhandled_exception_handler,
 )
+from app.db.database import init_db
 from app.jobs.scheduler_jobs import scheduler
 
 # Configure logging
@@ -26,7 +27,7 @@ async def lifespan(app: FastAPI):
     # Startup event
     logger.info("Application startup...")
     scheduler.start()
-    # await init_db()  # Initialize the database and create tables
+    await init_db()  # Initialize the database and create tables
     yield  # Control passes to the app during this time
     # Shutdown event
     logger.info("Application shutdown...")
@@ -42,6 +43,7 @@ app = FastAPI(
 
 # Include routers from the API
 app.include_router(movies.router, prefix="/v1/movies", tags=["Movies [v1]"])
+app.include_router(users.router, prefix="/v1/users", tags=["Users [v1]"])
 
 # Register global exception handlers
 app.add_exception_handler(MovieNotFoundException, movie_not_found_handler)
