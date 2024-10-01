@@ -16,15 +16,15 @@ class UserService:
     @classmethod
     async def add_user(cls, session: AsyncSession, user: User) -> UserCreate | None:
         hashed_password = pwd_context.hash(user.hashed_password)
-        add_user = User(username=user.username, email=user.email, hashed_password=hashed_password)
-        session.add(add_user)
+        user.hashed_password = hashed_password
+        session.add(user)
         try:
             await session.commit()
-            await session.refresh(add_user)
+            await session.refresh(user)
         except IntegrityError:
             await session.rollback()
             return
-        return add_user
+        return user
 
     @classmethod
     async def get_user(cls, session: AsyncSession, username_or_email: str) -> User | None:

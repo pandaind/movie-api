@@ -16,6 +16,7 @@ from app.core.exceptions import (
 )
 from app.db.database import init_db
 from app.jobs.scheduler_jobs import scheduler
+from app.security import api as security
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -44,6 +45,7 @@ app = FastAPI(
 # Include routers from the API
 app.include_router(movies.router, prefix="/v1/movies", tags=["Movies [v1]"])
 app.include_router(users.router, prefix="/v1/users", tags=["Users [v1]"])
+app.include_router(security.router, prefix="/v1/security", tags=["Security [v1]"])
 
 # Register global exception handlers
 app.add_exception_handler(MovieNotFoundException, movie_not_found_handler)
