@@ -8,4 +8,4 @@ def print_job():
 scheduler = BackgroundScheduler()
 
 # Add a job to the scheduler using a cron expression
-scheduler.add_job(print_job, 'cron', second='0/2')
+scheduler.add_job(print_job, 'cron', hour='0/1')
