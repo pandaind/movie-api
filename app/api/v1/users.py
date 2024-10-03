@@ -21,7 +21,7 @@ router = APIRouter()
     },
 )
 async def register(user: UserCreate, session: AsyncSession = Depends(get_db)) -> dict[str, UserCreateResponse]:
-    user = User(username=user.username, email=user.email, hashed_password=user.password)
+    user = User(username=user.username, email=user.email, hashed_password=user.password, role = Role(user.role))
     user_response = await UserService.add_user(
         session=session, user=user
     )
@@ -32,36 +32,6 @@ async def register(user: UserCreate, session: AsyncSession = Depends(get_db)) ->
         )
     user_response = UserCreateResponse(
         username=user.username, email=user.email
-    )
-    return {
-        "message": "user created",
-        "user": user_response,
-    }
-
-@router.post(
-    "/register/premium-user",
-    status_code=status.HTTP_201_CREATED,
-    response_model=ResponseCreateUser,
-    responses={
-        status.HTTP_409_CONFLICT: {
-            "description": "The user already exists"
-        },
-        status.HTTP_201_CREATED: {
-            "description": "User created"
-        },
-    },
-)
-async def register_premium_user(user: UserCreate,session: AsyncSession = Depends(get_db)):
-    user = User(username=user.username, email=user.email, hashed_password=user.password, role=Role.premium)
-    user_response = await UserService.add_user(session=session, user=user)
-    if not user_response:
-        raise HTTPException(
-            status.HTTP_409_CONFLICT,
-            "username or email already exists",
-        )
-    user_response = UserCreateResponse(
-        username=user.username,
-        email=user.email,
     )
     return {
         "message": "user created",

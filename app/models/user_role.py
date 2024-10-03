@@ -38,6 +38,7 @@ class UserCreate(BaseModel):
     username: str
     email: EmailStr
     password: str
+    role: Role
     model_config = {
         "from_attributes": True  # Allows SQLAlchemy models to be converted to Pydantic models
     }
