@@ -2,7 +2,7 @@ from enum import Enum
 from typing import Annotated
 
 from pydantic import BaseModel, EmailStr, Field
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.database import Base
 
@@ -20,6 +20,7 @@ class User(Base):
     hashed_password: Mapped[str]
     role: Mapped[Role] = mapped_column(default=Role.basic)
     totp_secret: Mapped[str] = mapped_column(nullable=True)
+    profile = relationship("Profile", uselist=False, back_populates="user")
 
 
 class UserCreate(BaseModel):

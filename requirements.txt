@@ -7,10 +7,10 @@ pydantic~=2.9.2
 alembic~=1.13.3
 apscheduler~=3.10.4
 email_validator~=2.2.0
-starlette~=0.38.6
+starlette~=0.40.0
 
 passlib[bcrypt]
-python-jose[cryptography]~=3.3.0
+python-jose[cryptography]
 pyotp~=2.6.0
 
 #Test

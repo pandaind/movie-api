@@ -1,10 +1,9 @@
 import asyncio
 from logging.config import fileConfig
 
+from alembic import context
 from sqlalchemy import pool
 from sqlalchemy.ext.asyncio import AsyncConnection, AsyncEngine, create_async_engine
-
-from alembic import context
 
 config = context.config
 
@@ -14,7 +13,6 @@ if config.config_file_name is not None:
 # target_metadata = None
 
 from app.db.database import Base  # Updated import
-from app.models import movie, user_role  # Import all models
 
 target_metadata = Base.metadata
 
