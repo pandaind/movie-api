@@ -25,3 +25,4 @@ rich~=13.9.2
 #maintenace
 black
 isort
+pre-commit
