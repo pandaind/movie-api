@@ -14,8 +14,8 @@ logging.basicConfig(
     handlers=[
         logging.StreamHandler(sys.stdout),  # Output logs to console
         # Add a FileHandler if you want to log to a file
-        logging.FileHandler("app.log")  # Output logs to a file
-    ]
+        logging.FileHandler("app.log"),  # Output logs to a file
+    ],
 )
 
 # Create a logger for specific parts of the app

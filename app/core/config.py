@@ -12,5 +12,6 @@ class Settings(BaseSettings):
     class Config:
         env_file = f".env.{os.getenv('ENVIRONMENT', 'development')}"  # Load the appropriate .env file
 
+
 # Instantiate the settings object
 settings = Settings()

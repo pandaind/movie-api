@@ -1,7 +1,7 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.exceptions import MovieNotFoundException, MovieAlreadyExistsException
+from app.core.exceptions import MovieAlreadyExistsException, MovieNotFoundException
 from app.core.logger import logger
 from app.models.movie import Movie
 

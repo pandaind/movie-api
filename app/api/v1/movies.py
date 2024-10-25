@@ -5,15 +5,24 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.exceptions import MovieNotFoundException
 from app.db.database import get_db
-from app.models.movie import Movie, MovieSchema, CreateMovie
+from app.models.movie import CreateMovie, Movie, MovieSchema
+from app.security.security import get_current_user
 from app.services.movies_services import MovieService
 
 router = APIRouter()
 
 
-@router.post("/", response_model=MovieSchema, summary="Add a new movie (v1)",
-             description="Create a new movie entry by providing its details.")
-async def create_movie(movie_data: CreateMovie, db: AsyncSession = Depends(get_db)):
+@router.post(
+    "/",
+    response_model=MovieSchema,
+    summary="Add a new movie (v1)",
+    description="Create a new movie entry by providing its details.",
+)
+async def create_movie(
+    movie_data: CreateMovie,
+    db: AsyncSession = Depends(get_db),
+    _user=Depends(get_current_user),
+):
     """
     Create a new movie entry by providing its details.
 
@@ -26,15 +35,24 @@ async def create_movie(movie_data: CreateMovie, db: AsyncSession = Depends(get_d
 
     Raises:
         HTTPException: If a movie with the same ID already exists, raises a 400 error.
+        :param _user:
+        :param movie_data:
+        :param db:
     """
     movie = Movie(**movie_data.model_dump())
     response = await MovieService.create_movie(movie, db)
     return response
 
 
-@router.get("/", response_model=List[MovieSchema], summary="Get all movies (v1)",
-            description="Retrieve a list of all movie s in the version 1 database.")
-async def get_movies(db: AsyncSession = Depends(get_db)):
+@router.get(
+    "/",
+    response_model=List[MovieSchema],
+    summary="Get all movies (v1)",
+    description="Retrieve a list of all movie s in the version 1 database.",
+)
+async def get_movies(
+    db: AsyncSession = Depends(get_db), _user=Depends(get_current_user)
+):
     """
     Retrieve a list of all movies in the version 1 database.
 
@@ -44,10 +62,16 @@ async def get_movies(db: AsyncSession = Depends(get_db)):
     return await MovieService.get_all_movies(db)
 
 
-@router.get("/{movie_id}", response_model=MovieSchema, summary="Get a movie by ID (v1)",
-            description="Retrieve details of a specific movie by its ID in version 1.",
-            responses={404: {"description": "Movie not found"}})
-async def get_movie(movie_id: int, db: AsyncSession = Depends(get_db)):
+@router.get(
+    "/{movie_id}",
+    response_model=MovieSchema,
+    summary="Get a movie by ID (v1)",
+    description="Retrieve details of a specific movie by its ID in version 1.",
+    responses={404: {"description": "Movie not found"}},
+)
+async def get_movie(
+    movie_id: int, db: AsyncSession = Depends(get_db), _user=Depends(get_current_user)
+):
     """
     Retrieve details of a specific movie by its ID in version 1.
 
@@ -59,6 +83,7 @@ async def get_movie(movie_id: int, db: AsyncSession = Depends(get_db)):
 
     Raises:
         HTTPException: If the movie with the specified ID is not found, raises a 404 error.
+        :param _user:
         :param movie_id:
         :param db:
     """
@@ -67,10 +92,17 @@ async def get_movie(movie_id: int, db: AsyncSession = Depends(get_db)):
         raise MovieNotFoundException(movie_id)
     return movie
 
-@router.get("/genre/{genre}", response_model=List[MovieSchema], summary="Get movies by genre (v1)",
-            description="Retrieve a list of movies by genre in version 1.",
-            responses={404: {"description": "No movies found"}})
-async def get_movies_by_genre(genre: str, db: AsyncSession = Depends(get_db)):
+
+@router.get(
+    "/genre/{genre}",
+    response_model=List[MovieSchema],
+    summary="Get movies by genre (v1)",
+    description="Retrieve a list of movies by genre in version 1.",
+    responses={404: {"description": "No movies found"}},
+)
+async def get_movies_by_genre(
+    genre: str, db: AsyncSession = Depends(get_db), _user=Depends(get_current_user)
+):
     """
     Retrieve a list of movies by genre in version 1.
 
@@ -82,18 +114,31 @@ async def get_movies_by_genre(genre: str, db: AsyncSession = Depends(get_db)):
 
     Raises:
         HTTPException: If no movies with the specified genre are found, raises a 404 error.
+        :param _user:
+        :param genre:
+        :param db:
     """
     movies = await MovieService.get_movies_by_genre(genre, db)
     if not movies:
-        raise HTTPException(status_code=404, detail=f"No movies found with genre '{genre}'")
+        raise HTTPException(
+            status_code=404, detail=f"No movies found with genre '{genre}'"
+        )
     return movies
 
-@router.put("/{movie_id}", response_model=MovieSchema, summary="Update a movie (v1)",
-            description="Update the details of an existing movie by its ID in version 1.",
-            responses={404: {"description": "Movie not found"}})
 
-
-async def update_movie(movie_id: int, movie_data: MovieSchema, db: AsyncSession = Depends(get_db)):
+@router.put(
+    "/{movie_id}",
+    response_model=MovieSchema,
+    summary="Update a movie (v1)",
+    description="Update the details of an existing movie by its ID in version 1.",
+    responses={404: {"description": "Movie not found"}},
+)
+async def update_movie(
+    movie_id: int,
+    movie_data: MovieSchema,
+    db: AsyncSession = Depends(get_db),
+    _user=Depends(get_current_user),
+):
     """
     Update a movie by its ID in version 1.
 
@@ -107,9 +152,15 @@ async def update_movie(movie_id: int, movie_data: MovieSchema, db: AsyncSession 
 
     Raises:
         HTTPException: If the movie with the specified ID is not found, raises a 404 error.
+        :param _user:
+        :param movie_id:
+        :param movie_data:
+        :param db:
     """
     if movie_data is None:
-        raise HTTPException(status_code=400, detail="Invalid input: movie_data is required")
+        raise HTTPException(
+            status_code=400, detail="Invalid input: movie_data is required"
+        )
 
     updated_movie = Movie(**movie_data.model_dump())
     movie = await MovieService.update_movie(movie_id, updated_movie, db)
@@ -118,10 +169,16 @@ async def update_movie(movie_id: int, movie_data: MovieSchema, db: AsyncSession 
     return movie
 
 
-@router.delete("/{movie_id}", response_model={}, summary="Delete a movie (v1)",
-               description="Delete a movie from the database by its ID in version 1.",
-               responses={404: {"description": "Movie not found"}})
-async def delete_movie(movie_id: int, db: AsyncSession = Depends(get_db)):
+@router.delete(
+    "/{movie_id}",
+    response_model={},
+    summary="Delete a movie (v1)",
+    description="Delete a movie from the database by its ID in version 1.",
+    responses={404: {"description": "Movie not found"}},
+)
+async def delete_movie(
+    movie_id: int, db: AsyncSession = Depends(get_db), _user=Depends(get_current_user)
+):
     """
     Delete a movie from the database by its ID in version 1.
 
@@ -134,6 +191,9 @@ async def delete_movie(movie_id: int, db: AsyncSession = Depends(get_db)):
 
     Raises:
         HTTPException: If the movie with the specified ID is not found, raises a 404 error.
+        :param _user:
+        :param movie_id:
+        :param db:
     """
     movie = await MovieService.delete_movie(movie_id, db)
     if movie is None:

@@ -16,6 +16,7 @@ class Movie(Base):
     def __repr__(self):
         return f"<Movie title={self.title}, director={self.director}, year={self.release_year}>"
 
+
 # Pydantic model for serialization/validation
 class MovieSchema(BaseModel):
     id: int
@@ -27,6 +28,7 @@ class MovieSchema(BaseModel):
     model_config = {
         "from_attributes": True  # Allows SQLAlchemy models to be converted to Pydantic models
     }
+
 
 class CreateMovie(BaseModel):
     title: str

@@ -4,14 +4,20 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
 
 from app.db.database import get_db
-from app.models.user_role import Role
-from app.security.model import Token, oauth2_scheme
-from app.security.security import decode_access_token, authenticate_user, create_access_token
+from app.models.user_role import Role, User, UserCreateResponse
+from app.security.github_security_config import resolve_github_token
+from app.security.model import Token
+from app.security.security import (
+    authenticate_user,
+    create_access_token,
+    get_current_user,
+    get_premium_user,
+)
 
 router = APIRouter()
 
-async def read_user(role: Role, token: str, session: AsyncSession):
-    user = await decode_access_token(token, session, [role])
+
+async def read_user(user):
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -21,56 +27,42 @@ async def read_user(role: Role, token: str, session: AsyncSession):
         "description": f"{user.username} authorized",
     }
 
+
 @router.get(
     "/users/me",
     responses={
-        status.HTTP_401_UNAUTHORIZED: {
-            "description": "User not authorized"
-        },
-        status.HTTP_200_OK: {
-            "description": "username authorized"
-        },
+        status.HTTP_401_UNAUTHORIZED: {"description": "User not authorized"},
+        status.HTTP_200_OK: {"description": "username authorized"},
     },
 )
-async def read_user_me(
-        token: str = Depends(oauth2_scheme),
-        session: AsyncSession = Depends(get_db),
-):
-    return await read_user(Role.basic, token, session)
+async def read_user_me(user: User = Depends(get_current_user)):
+    return await read_user(user)
+
 
 @router.get(
     "/users/premium",
     responses={
-        status.HTTP_401_UNAUTHORIZED: {
-            "description": "User not authorized"
-        },
-        status.HTTP_200_OK: {
-            "description": "username authorized"
-        },
+        status.HTTP_401_UNAUTHORIZED: {"description": "User not authorized"},
+        status.HTTP_200_OK: {"description": "username authorized"},
     },
 )
-async def read_user_premium(
-        token: str = Depends(oauth2_scheme),
-        session: AsyncSession = Depends(get_db),
-):
-    return await read_user(Role.premium, token, session)
+async def read_user_premium(user: User = Depends(get_premium_user)):
+    return await read_user(user)
+
 
 @router.post(
     "/token",
     response_model=Token,
     responses={
-        status.HTTP_401_UNAUTHORIZED: {
-            "description": "Incorrect username or password"
-        }
+        status.HTTP_401_UNAUTHORIZED: {"description": "Incorrect username or password"}
     },
+    include_in_schema=False,  # hide from swagger
 )
 async def get_user_access_token(
-        form_data: OAuth2PasswordRequestForm = Depends(),
-        session: AsyncSession = Depends(get_db),
+    form_data: OAuth2PasswordRequestForm = Depends(),
+    session: AsyncSession = Depends(get_db),
 ):
-    user = await authenticate_user(
-        session, form_data.username, form_data.password
-    )
+    user = await authenticate_user(session, form_data.username, form_data.password)
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -81,3 +73,12 @@ async def get_user_access_token(
         "access_token": access_token,
         "token_type": "bearer",
     }
+
+
+@router.get(
+    "/home",
+    responses={status.HTTP_403_FORBIDDEN: {"description": "token not valid"}},
+    include_in_schema=False,  # hide from swagger
+)
+def homepage(user: UserCreateResponse = Depends(resolve_github_token)):
+    return {"message": f"logged in {user.username} !"}
