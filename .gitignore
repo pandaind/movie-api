@@ -3,3 +3,5 @@
 *.pyc
 test.db
 app.log
+profiler.html
+profiler2.json

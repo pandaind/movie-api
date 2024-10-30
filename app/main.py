@@ -4,6 +4,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException
 from fastapi.exceptions import RequestValidationError
 
+from app.api.profiler import ProfileEndpointsMiddleWare
 from app.api.v1 import movies, users
 from app.core.exceptions import (
     MovieAlreadyExistsException,
@@ -46,6 +47,8 @@ app = FastAPI(
 
 # Add middleware to log client information
 app.add_middleware(ClientInfoMiddleware)
+# Add middleware to profile endpoint
+app.add_middleware(ProfileEndpointsMiddleWare)
 
 # Include routers from the API
 app.include_router(movies.router, prefix="/v1/movies", tags=["Movies [v1]"])

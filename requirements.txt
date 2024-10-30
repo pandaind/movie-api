@@ -13,6 +13,7 @@ babel
 passlib[bcrypt]
 python-jose[cryptography]
 pyotp~=2.6.0
+pyinstrument
 
 #Test
 pytest
