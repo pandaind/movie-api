@@ -1,8 +1,10 @@
-from typing import List
+from typing import Annotated, List
 
+from babel.numbers import get_currency_name
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.api.internationalization import resolve_accept_language
 from app.core.exceptions import MovieNotFoundException
 from app.db.database import get_db
 from app.models.movie import CreateMovie, Movie, MovieSchema
@@ -199,3 +201,69 @@ async def delete_movie(
     if movie is None:
         raise MovieNotFoundException(movie_id)
     return {"message": "Movie deleted successfully"}
+
+
+@router.get(
+    "/i18n/info",
+    summary="Get movies api info (v1)",
+    description="Get movies api info",
+    responses={400: {"description": "invalid parameters"}},
+)
+async def get_info_i18n(
+    language: Annotated[resolve_accept_language, Depends()],
+    _user=Depends(get_current_user),
+):
+    """
+    Retrieve the content for the internationalization (i18n) of the API.
+
+    Returns:
+        dict: The content for i18n.
+    """
+    info = {
+        "en_US": {
+            "movies": {"create": "Create a new movie", "get_all": "Get all movies"},
+            "movie": {
+                "get_by_id": "Get movie by ID",
+                "get_by_genre": "Get movies by genre",
+                "update": "Update movie by ID",
+                "delete": "Delete movie by ID",
+            },
+        },
+        "fr_FR": {
+            "movies": {
+                "create": "Créer un nouveau film",
+                "get_all": "Obtenir tous les films",
+            },
+            "movie": {
+                "get_by_id": "Obtenir le film par ID",
+                "get_by_genre": "Obtenir les films par genre",
+                "update": "Modifier le film par ID",
+                "delete": "Supprimer le film par ID",
+            },
+        },
+    }
+    return info[language]
+
+
+async def get_currency(
+    language: Annotated[resolve_accept_language, Depends()],
+):
+    currencies = {
+        "en_US": "USD",
+        "fr_FR": "EUR",
+    }
+
+    return currencies[language]
+
+
+@router.get("/i18n/currency")
+async def show_currency(
+    currency: Annotated[get_currency, Depends()],
+    language: Annotated[resolve_accept_language, Depends(use_cache=True)],
+    _user=Depends(get_current_user),
+):
+    currency_name = get_currency_name(currency, locale=language)
+    return {
+        "currency": currency,
+        "currency_name": currency_name,
+    }

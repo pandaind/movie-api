@@ -1,15 +1,12 @@
-from sqlalchemy import Column, ForeignKey, Integer, String
-from sqlalchemy.orm import relationship
+from sqlalchemy import ForeignKey
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.database import Base
 
 
 class Profile(Base):
     __tablename__ = "profiles"
-    id = Column(Integer, primary_key=True)
-    bio = Column(String)
-    user_id = Column(Integer, ForeignKey("users.id"))
-    user = relationship("User", back_populates="profile")
-
-
-profile = Profile()
+    id: Mapped[int] = mapped_column(index=True, primary_key=True)
+    bio: Mapped[str] = mapped_column(nullable=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
+    user: Mapped["User"] = relationship("User", back_populates="profile")

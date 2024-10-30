@@ -6,8 +6,8 @@ from fastapi import status
 from httpx import ASGITransport, AsyncClient
 
 from app.main import app
+from app.models import profile
 from app.models.movie import Movie
-from app.models.profile import profile
 
 
 class TestMoviesAPI(unittest.IsolatedAsyncioTestCase):

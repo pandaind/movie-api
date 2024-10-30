@@ -8,6 +8,7 @@ alembic~=1.13.3
 apscheduler~=3.10.4
 email_validator~=2.2.0
 starlette~=0.40.0
+babel
 
 passlib[bcrypt]
 python-jose[cryptography]

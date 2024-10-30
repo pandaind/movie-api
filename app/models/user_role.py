@@ -5,6 +5,7 @@ from pydantic import BaseModel, EmailStr, Field
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.database import Base
+from app.models.profile import Profile
 
 
 class UserRole(str, Enum):
@@ -20,7 +21,9 @@ class User(Base):
     hashed_password: Mapped[str]
     role: Mapped[UserRole] = mapped_column(default=UserRole.basic)
     totp_secret: Mapped[str] = mapped_column(nullable=True)
-    profile = relationship("Profile", uselist=False, back_populates="user")
+    profile: Mapped["Profile"] = relationship(
+        "Profile", uselist=False, back_populates="user"
+    )
 
 
 class UserCreate(BaseModel):
