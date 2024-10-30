@@ -3,8 +3,10 @@ from typing import Annotated, List
 from babel.numbers import get_currency_name
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
+from starlette.requests import Request
 
 from app.api.internationalization import resolve_accept_language
+from app.api.rate_limit import limiter
 from app.core.exceptions import MovieNotFoundException
 from app.db.database import get_db
 from app.models.movie import CreateMovie, Movie, MovieSchema
@@ -44,6 +46,7 @@ async def create_movie(
     movie = Movie(**movie_data.model_dump())
     response = await MovieService.create_movie(movie, db)
     return response
+
 
 
 @router.get(
@@ -202,6 +205,17 @@ async def delete_movie(
         raise MovieNotFoundException(movie_id)
     return {"message": "Movie deleted successfully"}
 
+async def get_currency(
+    language: Annotated[resolve_accept_language, Depends()],
+):
+    currencies = {
+        "en_US": "USD",
+        "fr_FR": "EUR",
+    }
+
+    return currencies[language]
+
+
 
 @router.get(
     "/i18n/info",
@@ -209,7 +223,9 @@ async def delete_movie(
     description="Get movies api info",
     responses={400: {"description": "invalid parameters"}},
 )
+@limiter.limit("2/minute")
 async def get_info_i18n(
+    request: Request,
     language: Annotated[resolve_accept_language, Depends()],
     _user=Depends(get_current_user),
 ):
@@ -245,19 +261,10 @@ async def get_info_i18n(
     return info[language]
 
 
-async def get_currency(
-    language: Annotated[resolve_accept_language, Depends()],
-):
-    currencies = {
-        "en_US": "USD",
-        "fr_FR": "EUR",
-    }
-
-    return currencies[language]
-
-
 @router.get("/i18n/currency")
+@limiter.limit("default_limits")
 async def show_currency(
+    request: Request,
     currency: Annotated[get_currency, Depends()],
     language: Annotated[resolve_accept_language, Depends(use_cache=True)],
     _user=Depends(get_current_user),

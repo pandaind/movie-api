@@ -3,8 +3,11 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, HTTPException
 from fastapi.exceptions import RequestValidationError
+from slowapi import _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
 
 from app.api.profiler import ProfileEndpointsMiddleWare
+from app.api.rate_limit import limiter
 from app.api.v1 import movies, users
 from app.core.exceptions import (
     MovieAlreadyExistsException,
@@ -43,6 +46,12 @@ app = FastAPI(
     description="An API for managing a simple movie database. Supports CRUD operations with error handling.",
     version="1.0.0",
     lifespan=lifespan,
+)
+
+# Configure RateLimit
+app.state.limiter = limiter
+app.add_exception_handler(
+    RateLimitExceeded, _rate_limit_exceeded_handler
 )
 
 # Add middleware to log client information

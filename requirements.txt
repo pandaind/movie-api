@@ -8,12 +8,17 @@ alembic~=1.13.3
 apscheduler~=3.10.4
 email_validator~=2.2.0
 starlette~=0.40.0
+# I18N
 babel
 
 passlib[bcrypt]
 python-jose[cryptography]
+# MFA
 pyotp~=2.6.0
+# Profiling
 pyinstrument
+# Rate limit
+slowapi
 
 #Test
 pytest
