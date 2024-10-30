@@ -4,13 +4,13 @@ import pytest
 from fastapi.testclient import TestClient
 
 from app.main import app
-from app.models.user_role import Role, User
+from app.models.user_role import User, UserRole
 from tests.conftests import common_mocks
 
 client = TestClient(app)
 
-mock_basic_user = User(username="testuser", role=Role.basic)
-mock_premium_user = User(username="premiumuser", role=Role.premium)
+mock_basic_user = User(username="testuser", role=UserRole.basic)
+mock_premium_user = User(username="premiumuser", role=UserRole.premium)
 
 
 @pytest.mark.asyncio
@@ -77,7 +77,7 @@ async def test_read_user_premium_unauthorized(mocker):
 
 @pytest.mark.asyncio
 async def test_get_user_access_token_success(mocker):
-    mock_user = User(username="testuser", role=Role.basic)
+    mock_user = User(username="testuser", role=UserRole.basic)
     mocker.patch("app.security.api.authenticate_user", return_value=mock_user)
     mocker.patch("app.security.api.create_access_token", return_value="testtoken")
     response = client.post(

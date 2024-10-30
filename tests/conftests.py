@@ -7,7 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_asyn
 
 from app.db.database import Base, get_db
 from app.main import app, logger
-from app.models.user_role import Role, User
+from app.models.user_role import User, UserRole
 
 
 @pytest.fixture(scope="function")
@@ -58,7 +58,7 @@ async def test_db_session(setup_db):
             username="pandaind",
             email="pandaind@example.com",
             hashed_password=hashed_password,
-            role=Role.basic,
+            role=UserRole.basic,
             totp_secret="",
         )
         session.add(default_user)

@@ -42,14 +42,18 @@ class UserService:
     # Use join for filtering and sorting based on related tables.
     # Use joinedload for eager loading related objects to avoid additional queries.
     @classmethod
-    async def get_user_with_profile(cls, session: AsyncSession, user_id: int) -> User | None:
+    async def get_user_with_profile(
+        cls, session: AsyncSession, user_id: int
+    ) -> User | None:
         result = await session.execute(
             select(User).options(joinedload(User.profile)).where(User.id == user_id)
         )
         return result.scalar_one_or_none()
 
     @classmethod
-    async def get_user_with_profile_join(cls, session: AsyncSession, user_id: int) -> User | None:
+    async def get_user_with_profile_join(
+        cls, session: AsyncSession, user_id: int
+    ) -> User | None:
         result = await session.execute(
             select(User)
             .join(User.profile)
@@ -59,8 +63,12 @@ class UserService:
         return result.scalar_one_or_none()
 
     @classmethod
-    async def get_user_with_ony_bio(cls, session: AsyncSession, user_id: int) -> User | None:
+    async def get_user_with_ony_bio(
+        cls, session: AsyncSession, user_id: int
+    ) -> User | None:
         result = await session.execute(
-            select(User).options(joinedload(User.profile).load_only("bio")).where(User.id == user_id)
+            select(User)
+            .options(joinedload(User.profile).load_only("bio"))
+            .where(User.id == user_id)
         )
         return result.scalar_one_or_none()

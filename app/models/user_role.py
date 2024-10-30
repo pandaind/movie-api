@@ -7,7 +7,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.db.database import Base
 
 
-class Role(str, Enum):
+class UserRole(str, Enum):
     basic = "basic"
     premium = "premium"
 
@@ -18,7 +18,7 @@ class User(Base):
     username: Mapped[str] = mapped_column(unique=True, index=True)
     email: Mapped[str] = mapped_column(unique=True, index=True)
     hashed_password: Mapped[str]
-    role: Mapped[Role] = mapped_column(default=Role.basic)
+    role: Mapped[UserRole] = mapped_column(default=UserRole.basic)
     totp_secret: Mapped[str] = mapped_column(nullable=True)
     profile = relationship("Profile", uselist=False, back_populates="user")
 
@@ -27,7 +27,7 @@ class UserCreate(BaseModel):
     username: str
     email: EmailStr
     password: str
-    role: Role
+    role: UserRole
     model_config = {
         "from_attributes": True  # Allows SQLAlchemy models to be converted to Pydantic models
     }

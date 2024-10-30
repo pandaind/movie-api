@@ -1,6 +1,8 @@
 from sqlalchemy.ext.asyncio import AsyncSession
+
 from app.models.credit_card import CreditCard
-from app.security.security import encrypt_credit_card_info, decrypt_credit_card_info
+from app.security.security import decrypt_credit_card_info, encrypt_credit_card_info
+
 
 class CreditCardService:
     @staticmethod
@@ -22,13 +24,19 @@ class CreditCardService:
         credit_card = await session.get(CreditCard, card_id)
         if credit_card:
             credit_card.number = decrypt_credit_card_info(credit_card.number)
-            credit_card.expiration_date = decrypt_credit_card_info(credit_card.expiration_date)
+            credit_card.expiration_date = decrypt_credit_card_info(
+                credit_card.expiration_date
+            )
             credit_card.cvv = decrypt_credit_card_info(credit_card.cvv)
-            credit_card.card_holder_name = decrypt_credit_card_info(credit_card.card_holder_name)
+            credit_card.card_holder_name = decrypt_credit_card_info(
+                credit_card.card_holder_name
+            )
         return credit_card
 
     @staticmethod
-    async def update_credit_card(session: AsyncSession, card_id: int, card_info: dict) -> CreditCard | None:
+    async def update_credit_card(
+        session: AsyncSession, card_id: int, card_info: dict
+    ) -> CreditCard | None:
         credit_card = await session.get(CreditCard, card_id)
         if credit_card:
             for key, value in card_info.items():

@@ -7,10 +7,10 @@ from starlette.responses import Response
 from app.db.database import get_db
 from app.models.user_role import (
     ResponseCreateUser,
-    Role,
     User,
     UserCreate,
     UserCreateResponse,
+    UserRole,
 )
 from app.security.security import get_current_user
 from app.services.user_services import UserService
@@ -31,7 +31,7 @@ async def register(
         username=user.username,
         email=user.email,
         hashed_password=user.password,
-        role=Role(user.role),
+        role=UserRole(user.role),
     )
     user_response = await UserService.add_user(session=session, user=user)
     if not user_response:

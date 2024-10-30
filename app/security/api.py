@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
 
 from app.db.database import get_db
-from app.models.user_role import Role, User, UserCreateResponse
+from app.models.user_role import User, UserCreateResponse, UserRole
 from app.security.github_security_config import resolve_github_token
 from app.security.model import Token
 from app.security.security import (
