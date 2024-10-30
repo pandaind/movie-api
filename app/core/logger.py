@@ -1,3 +1,4 @@
+import asyncio
 import logging
 import sys
 from logging.handlers import RotatingFileHandler
@@ -20,3 +21,9 @@ logging.basicConfig(
 
 # Create a logger for specific parts of the app
 logger = logging.getLogger(settings.app_name)
+
+
+async def background_task(message: str):
+    logger.info(f"Storing message '{message}'.")
+    await asyncio.sleep(5)
+    logger.info(f"Message '{message}' stored!")

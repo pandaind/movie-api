@@ -1,13 +1,14 @@
 from typing import Annotated, List
 
 from babel.numbers import get_currency_name
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette.requests import Request
 
 from app.api.internationalization import resolve_accept_language
 from app.api.rate_limit import limiter
 from app.core.exceptions import MovieNotFoundException
+from app.core.logger import background_task
 from app.db.database import get_db
 from app.models.movie import CreateMovie, Movie, MovieSchema
 from app.security.security import get_current_user
@@ -226,6 +227,7 @@ async def get_currency(
 @limiter.limit("2/minute")
 async def get_info_i18n(
     request: Request,
+    background_tasks: BackgroundTasks,
     language: Annotated[resolve_accept_language, Depends()],
     _user=Depends(get_current_user),
 ):
@@ -265,11 +267,13 @@ async def get_info_i18n(
 @limiter.limit("default_limits")
 async def show_currency(
     request: Request,
+    background_tasks: BackgroundTasks,
     currency: Annotated[get_currency, Depends()],
     language: Annotated[resolve_accept_language, Depends(use_cache=True)],
     _user=Depends(get_current_user),
 ):
     currency_name = get_currency_name(currency, locale=language)
+    background_tasks.add_task(background_task, currency)
     return {
         "currency": currency,
         "currency_name": currency_name,
