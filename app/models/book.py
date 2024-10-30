@@ -10,3 +10,5 @@ class Book(Base):
     title = Column(String)
     author_id = Column(Integer, ForeignKey('authors.id'))
     author = relationship("Author", back_populates="books")
+
+book = Book(title="The Great Gatsby")

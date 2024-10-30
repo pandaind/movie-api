@@ -10,3 +10,5 @@ class Profile(Base):
     bio = Column(String)
     user_id = Column(Integer, ForeignKey('users.id'))
     user = relationship("User", back_populates="profile")
+
+profile = Profile()

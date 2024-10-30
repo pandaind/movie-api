@@ -7,6 +7,7 @@ from httpx import ASGITransport, AsyncClient
 
 from app.main import app
 from app.models.movie import Movie
+from app.models.profile import profile
 
 
 class TestMoviesAPI(unittest.IsolatedAsyncioTestCase):
@@ -53,7 +54,7 @@ class TestMoviesAPI(unittest.IsolatedAsyncioTestCase):
     @patch(
         "app.security.security.decode_access_token",
         new_callable=AsyncMock,
-        return_value={"user_id": 1},
+        return_value={"user_id": 1, profile: None},
     )
     async def test_create_movie(self, mock_create_movie, decode_access_token):
         response = await self.client.post(

@@ -3,7 +3,7 @@ from sqlalchemy.orm import relationship
 
 from app.db.database import Base
 
-association_table = Table('association', Base.metadata,
+association_table = Table('student_course', Base.metadata,
                           Column('student_id', Integer, ForeignKey('students.id')),
                           Column('course_id', Integer, ForeignKey('courses.id'))
                           )
@@ -19,3 +19,8 @@ class Course(Base):
     id = Column(Integer, primary_key=True)
     title = Column(String)
     students = relationship("Student", secondary=association_table, back_populates="courses")
+
+student1 = Student(name='John Doe')
+student2 = Student(name='Jane Doe')
+course1 = Course(title='Python')
+course2 = Course(title='SQL')

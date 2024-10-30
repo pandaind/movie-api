@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta, timezone
 
+from cryptography.fernet import Fernet
 from fastapi import Depends, HTTPException
 from jose import JWTError, jwt
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -84,3 +85,18 @@ async def get_premium_user(
     token: str = Depends(oauth2_scheme), session: AsyncSession = Depends(get_db)
 ):
     return await get_current_user(token, session, Role.premium)
+
+### Credit Card Encryption
+
+key = Fernet.generate_key()
+cypher_suite = Fernet(key)
+
+def encrypt_credit_card_info(card_info: str) -> str:
+    return cypher_suite.encrypt(
+        card_info.encode()
+    ).decode()
+
+def decrypt_credit_card_info(encrypted_card_info: str) -> str:
+    return cypher_suite.decrypt(
+        encrypted_card_info.encode()
+    ).decode()
