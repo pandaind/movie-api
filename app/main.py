@@ -16,6 +16,7 @@ from app.core.exceptions import (
 )
 from app.db.database import init_db
 from app.jobs.scheduler_jobs import scheduler
+from app.middleware.middleware import ClientInfoMiddleware
 from app.security import api as security
 from app.security import github_login, mfa
 
@@ -42,6 +43,9 @@ app = FastAPI(
     version="1.0.0",
     lifespan=lifespan,
 )
+
+# Add middleware to log client information
+app.add_middleware(ClientInfoMiddleware)
 
 # Include routers from the API
 app.include_router(movies.router, prefix="/v1/movies", tags=["Movies [v1]"])
