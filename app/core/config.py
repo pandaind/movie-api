@@ -8,6 +8,7 @@ class Settings(BaseSettings):
     environment: str
     debug: bool
     database_url: str
+    enable_profiling: bool
 
     class Config:
         env_file = f".env.{os.getenv('ENVIRONMENT', 'development')}"  # Load the appropriate .env file

@@ -5,10 +5,14 @@ from passlib.context import CryptContext
 from sqlalchemy import StaticPool
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
+from app.api.profiler import ProfileEndpointsMiddleWare
 from app.db.database import Base, get_db
-from app.main import app, logger
+from app.main import app
 from app.models.user_role import User, UserRole
 
+
+async def side_effect_profile_endpoint_middleware(request, call_next):
+    return await call_next(request)
 
 @pytest.fixture(scope="function")
 def common_mocks(mocker):
@@ -16,6 +20,7 @@ def common_mocks(mocker):
         "app.security.security.decode_access_token",
         return_value={"user_id": 1, "username": "testuser", "role": "basic"},
     )
+
     yield
     mocker.stopall()
 
@@ -65,11 +70,19 @@ async def test_db_session(setup_db):
         await session.commit()
         yield session
 
-
 @pytest_asyncio.fixture(scope="function")
-async def test_client(test_db_session):
+async def integration_test_client(test_db_session, mocker):
+    mocker.patch.object(ProfileEndpointsMiddleWare, "dispatch", side_effect=side_effect_profile_endpoint_middleware)
     async with AsyncClient(
         transport=ASGITransport(app=app), base_url="http://testserver"
     ) as client:
         app.dependency_overrides[get_db] = lambda: test_db_session
+        yield client
+
+@pytest_asyncio.fixture(scope="function")
+async def test_client(mocker):
+    mocker.patch.object(ProfileEndpointsMiddleWare, "dispatch", side_effect=side_effect_profile_endpoint_middleware)
+    async with AsyncClient(
+        transport=ASGITransport(app=app), base_url="http://testserver"
+    ) as client:
         yield client

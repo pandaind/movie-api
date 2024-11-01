@@ -1,10 +1,10 @@
 import pytest
 from fastapi import status
 
-from tests.conftests import setup_db, test_client, test_db_session
+from tests.conftests import setup_db, integration_test_client, test_db_session
 
 
-async def get_token(test_client):
+async def get_token(integration_test_client):
     payload = {
         "username": "pandaind",
         "password": "hello",
@@ -12,7 +12,7 @@ async def get_token(test_client):
         "client_secret": "aks",
     }
     headers = {"Content-Type": "application/x-www-form-urlencoded"}
-    response = await test_client.post(
+    response = await integration_test_client.post(
         "/v1/security/token", data=payload, headers=headers
     )
     token = response.json()["access_token"]
@@ -21,7 +21,7 @@ async def get_token(test_client):
 
 @pytest.mark.asyncio
 @pytest.mark.integration
-async def test_create_movie(test_client, test_db_session, setup_db):
+async def test_create_movie(integration_test_client, test_db_session, setup_db):
     payload = {
         "id": 1,
         "title": "ioeuyrue",
@@ -29,10 +29,10 @@ async def test_create_movie(test_client, test_db_session, setup_db):
         "director": "Test Director",
         "release_year": 2021,
     }
-    response = await test_client.post(
+    response = await integration_test_client.post(
         "/v1/movies/",
         json=payload,
-        headers={"Authorization": f"Bearer {await get_token(test_client)}"},
+        headers={"Authorization": f"Bearer {await get_token(integration_test_client)}"},
     )
     assert response.status_code == status.HTTP_200_OK
     assert response.json()["title"] == "ioeuyrue"
@@ -40,7 +40,7 @@ async def test_create_movie(test_client, test_db_session, setup_db):
 
 @pytest.mark.asyncio
 @pytest.mark.integration
-async def test_get_movies(test_client, test_db_session, setup_db):
+async def test_get_movies(integration_test_client, test_db_session, setup_db):
     # Create a movie
     payload = {
         "id": 1,
@@ -49,15 +49,15 @@ async def test_get_movies(test_client, test_db_session, setup_db):
         "director": "Test Director",
         "release_year": 2021,
     }
-    await test_client.post(
+    await integration_test_client.post(
         "/v1/movies/",
         json=payload,
-        headers={"Authorization": f"Bearer {await get_token(test_client)}"},
+        headers={"Authorization": f"Bearer {await get_token(integration_test_client)}"},
     )
     # Get all movies
-    response = await test_client.get(
+    response = await integration_test_client.get(
         "/v1/movies/",
-        headers={"Authorization": f"Bearer {await get_token(test_client)}"},
+        headers={"Authorization": f"Bearer {await get_token(integration_test_client)}"},
     )
     assert response.status_code == status.HTTP_200_OK
     assert isinstance(response.json(), list)
@@ -65,7 +65,7 @@ async def test_get_movies(test_client, test_db_session, setup_db):
 
 @pytest.mark.asyncio
 @pytest.mark.integration
-async def test_get_movie(test_client, test_db_session, setup_db):
+async def test_get_movie(integration_test_client, test_db_session, setup_db):
     # Create a movie
     payload = {
         "id": 1,
@@ -74,15 +74,15 @@ async def test_get_movie(test_client, test_db_session, setup_db):
         "director": "Test Director",
         "release_year": 2021,
     }
-    await test_client.post(
+    await integration_test_client.post(
         "/v1/movies/",
         json=payload,
-        headers={"Authorization": f"Bearer {await get_token(test_client)}"},
+        headers={"Authorization": f"Bearer {await get_token(integration_test_client)}"},
     )
     # Get a movie
-    response = await test_client.get(
+    response = await integration_test_client.get(
         "/v1/movies/1",
-        headers={"Authorization": f"Bearer {await get_token(test_client)}"},
+        headers={"Authorization": f"Bearer {await get_token(integration_test_client)}"},
     )
     assert response.status_code == status.HTTP_200_OK
     assert response.json()["id"] == 1
@@ -90,7 +90,7 @@ async def test_get_movie(test_client, test_db_session, setup_db):
 
 @pytest.mark.asyncio
 @pytest.mark.integration
-async def test_get_movies_by_genre(test_client, test_db_session, setup_db):
+async def test_get_movies_by_genre(integration_test_client, test_db_session, setup_db):
     # Create a movie
     payload = {
         "id": 1,
@@ -99,15 +99,15 @@ async def test_get_movies_by_genre(test_client, test_db_session, setup_db):
         "director": "Test Director",
         "release_year": 2021,
     }
-    await test_client.post(
+    await integration_test_client.post(
         "/v1/movies/",
         json=payload,
-        headers={"Authorization": f"Bearer {await get_token(test_client)}"},
+        headers={"Authorization": f"Bearer {await get_token(integration_test_client)}"},
     )
     # Get movies by genre
-    response = await test_client.get(
+    response = await integration_test_client.get(
         "/v1/movies/genre/Horror",
-        headers={"Authorization": f"Bearer {await get_token(test_client)}"},
+        headers={"Authorization": f"Bearer {await get_token(integration_test_client)}"},
     )
     assert response.status_code == status.HTTP_200_OK
     assert isinstance(response.json(), list)
@@ -115,7 +115,7 @@ async def test_get_movies_by_genre(test_client, test_db_session, setup_db):
 
 @pytest.mark.asyncio
 @pytest.mark.integration
-async def test_update_movie(test_client, test_db_session, setup_db):
+async def test_update_movie(integration_test_client, test_db_session, setup_db):
     # Create a movie
     payload = {
         "id": 1,
@@ -124,10 +124,10 @@ async def test_update_movie(test_client, test_db_session, setup_db):
         "director": "Test Director",
         "release_year": 2021,
     }
-    await test_client.post(
+    await integration_test_client.post(
         "/v1/movies/",
         json=payload,
-        headers={"Authorization": f"Bearer {await get_token(test_client)}"},
+        headers={"Authorization": f"Bearer {await get_token(integration_test_client)}"},
     )
     # Update a movie
     payload = {
@@ -137,10 +137,10 @@ async def test_update_movie(test_client, test_db_session, setup_db):
         "director": "Updated Director",
         "release_year": 2021,
     }
-    response = await test_client.put(
+    response = await integration_test_client.put(
         "/v1/movies/1",
         json=payload,
-        headers={"Authorization": f"Bearer {await get_token(test_client)}"},
+        headers={"Authorization": f"Bearer {await get_token(integration_test_client)}"},
     )
     assert response.status_code == status.HTTP_200_OK
     assert response.json()["title"] == "Updated Movie"
@@ -148,7 +148,7 @@ async def test_update_movie(test_client, test_db_session, setup_db):
 
 @pytest.mark.asyncio
 @pytest.mark.integration
-async def test_delete_movie(test_client, test_db_session, setup_db):
+async def test_delete_movie(integration_test_client, test_db_session, setup_db):
     # Create a movie
     payload = {
         "id": 1,
@@ -157,15 +157,15 @@ async def test_delete_movie(test_client, test_db_session, setup_db):
         "director": "Test Director",
         "release_year": 2021,
     }
-    await test_client.post(
+    await integration_test_client.post(
         "/v1/movies/",
         json=payload,
-        headers={"Authorization": f"Bearer {await get_token(test_client)}"},
+        headers={"Authorization": f"Bearer {await get_token(integration_test_client)}"},
     )
     # Delete a movie
-    response = await test_client.delete(
+    response = await integration_test_client.delete(
         "/v1/movies/1",
-        headers={"Authorization": f"Bearer {await get_token(test_client)}"},
+        headers={"Authorization": f"Bearer {await get_token(integration_test_client)}"},
     )
     assert response.status_code == status.HTTP_200_OK
     assert response.json()["message"] == "Movie deleted successfully"

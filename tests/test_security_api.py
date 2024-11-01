@@ -1,13 +1,8 @@
 from unittest.mock import AsyncMock, patch
-
 import pytest
-from fastapi.testclient import TestClient
 
-from app.main import app
 from app.models.user_role import User, UserRole
-from tests.conftests import common_mocks
-
-client = TestClient(app)
+from tests.conftests import test_client
 
 mock_basic_user = User(username="testuser", role=UserRole.basic)
 mock_premium_user = User(username="premiumuser", role=UserRole.premium)
@@ -19,8 +14,8 @@ mock_premium_user = User(username="premiumuser", role=UserRole.premium)
     new_callable=AsyncMock,
     return_value=mock_basic_user,
 )
-async def test_read_user_me_success(mocker):
-    response = client.get(
+async def test_read_user_me_success(mocker, test_client):
+    response = await test_client.get(
         "/v1/security/users/me", headers={"Authorization": "Bearer testtoken"}
     )
     assert response.status_code == 200
@@ -33,8 +28,8 @@ async def test_read_user_me_success(mocker):
     new_callable=AsyncMock,
     return_value=None,
 )
-async def test_read_user_me_unauthorized(mocker):
-    response = client.get(
+async def test_read_user_me_unauthorized(mocker, test_client):
+    response = await test_client.get(
         "/v1/security/users/me", headers={"Authorization": "Bearer invalidtoken"}
     )
     assert response.status_code == 401
@@ -50,8 +45,8 @@ async def test_read_user_me_unauthorized(mocker):
     new_callable=AsyncMock,
     return_value=mock_premium_user,
 )
-async def test_read_user_premium_success(mocker):
-    response = client.get(
+async def test_read_user_premium_success(mocker, test_client):
+    response = await test_client.get(
         "/v1/security/users/premium", headers={"Authorization": "Bearer testtoken"}
     )
     assert response.status_code == 200
@@ -64,8 +59,8 @@ async def test_read_user_premium_success(mocker):
     new_callable=AsyncMock,
     return_value=None,
 )
-async def test_read_user_premium_unauthorized(mocker):
-    response = client.get(
+async def test_read_user_premium_unauthorized(mocker, test_client):
+    response = await test_client.get(
         "/v1/security/users/premium", headers={"Authorization": "Bearer invalidtoken"}
     )
     assert response.status_code == 401
@@ -76,11 +71,11 @@ async def test_read_user_premium_unauthorized(mocker):
 
 
 @pytest.mark.asyncio
-async def test_get_user_access_token_success(mocker):
+async def test_get_user_access_token_success(mocker, test_client):
     mock_user = User(username="testuser", role=UserRole.basic)
     mocker.patch("app.security.api.authenticate_user", return_value=mock_user)
     mocker.patch("app.security.api.create_access_token", return_value="testtoken")
-    response = client.post(
+    response = await test_client.post(
         "/v1/security/token", data={"username": "testuser", "password": "password123"}
     )
     assert response.status_code == 200
@@ -88,9 +83,9 @@ async def test_get_user_access_token_success(mocker):
 
 
 @pytest.mark.asyncio
-async def test_get_user_access_token_unauthorized(mocker):
+async def test_get_user_access_token_unauthorized(mocker, test_client):
     mocker.patch("app.security.api.authenticate_user", return_value=None)
-    response = client.post(
+    response = await test_client.post(
         "/v1/security/token",
         data={"username": "invaliduser", "password": "wrongpassword"},
     )

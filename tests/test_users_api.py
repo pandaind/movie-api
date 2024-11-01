@@ -1,16 +1,13 @@
 from unittest.mock import AsyncMock
 
 import pytest
-from starlette.testclient import TestClient
 
-from app.main import app
 from app.models.user_role import UserCreateResponse
-
-client = TestClient(app)
+from tests.conftests import test_client
 
 
 @pytest.mark.asyncio
-async def test_register_user(mocker):
+async def test_register_user(mocker, test_client):
     mock_user_service = mocker.patch(
         "app.services.user_services.UserService.add_user", new_callable=AsyncMock
     )
@@ -18,7 +15,7 @@ async def test_register_user(mocker):
         username="testuser", email="test@example.com"
     )
 
-    response = client.post(
+    response = await test_client.post(
         "/v1/users/register",
         json={
             "username": "testuser",
@@ -36,13 +33,13 @@ async def test_register_user(mocker):
 
 
 @pytest.mark.asyncio
-async def test_register_user_already_exists(mocker):
+async def test_register_user_already_exists(mocker, test_client):
     mock_user_service = mocker.patch(
         "app.services.user_services.UserService.add_user", new_callable=AsyncMock
     )
     mock_user_service.return_value = None
 
-    response = client.post(
+    response = await test_client.post(
         "/v1/users/register",
         json={
             "username": "existinguser",
