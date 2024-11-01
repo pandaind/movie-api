@@ -1,20 +1,11 @@
 from typing import Annotated
 
-from fastapi import (
-    APIRouter,
-    Depends,
-    Request,
-    WebSocket,
-    WebSocketDisconnect,
-)
+from fastapi import APIRouter, Depends, Request, WebSocket, WebSocketDisconnect
 from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
 
-from app.chat.ws_security import (
-    fake_token_resolver,
-    get_username_from_token,
-)
 from app.chat.web_socket_manger import ConnectionManager
+from app.chat.ws_security import fake_token_resolver, get_username_from_token
 
 router = APIRouter()
 
@@ -23,7 +14,7 @@ templates = Jinja2Templates(directory="templates")
 
 @router.get("/")
 async def exclusive_chatroom(
-        request: Request,
+    request: Request,
 ):
     token = request.cookies.get("chatroomtoken", "")
     user = fake_token_resolver(token)
@@ -43,10 +34,8 @@ connection_manager = ConnectionManager()
 
 @router.websocket("/ws-secure")
 async def websocket_chatroom(
-        websocket: WebSocket,
-        username: Annotated[
-            get_username_from_token, Depends()
-        ],
+    websocket: WebSocket,
+    username: Annotated[get_username_from_token, Depends()],
 ):
     await connection_manager.connect(websocket)
     await connection_manager.broadcast(
@@ -72,6 +61,4 @@ async def websocket_chatroom(
             )
     except WebSocketDisconnect:
         connection_manager.disconnect(websocket)
-        await connection_manager.broadcast(
-            f"Client #{username} left the chat"
-        )
+        await connection_manager.broadcast(f"Client #{username} left the chat")

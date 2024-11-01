@@ -9,7 +9,7 @@ apscheduler~=3.10.4
 email_validator~=2.2.0
 starlette~=0.40.0
 # I18N
-babel
+babel~=2.16.0
 
 passlib[bcrypt]
 python-jose[cryptography]
@@ -19,6 +19,19 @@ pyotp~=2.6.0
 pyinstrument
 # Rate limit
 slowapi
+
+#grps
+grpcio
+grpcio-tools
+
+#graphql
+strawberry-graphql[fastapi]
+
+#ML
+joblib
+scikit-learn
+huggingface_hub
+requests
 
 #Test
 pytest

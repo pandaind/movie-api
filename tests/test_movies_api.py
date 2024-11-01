@@ -40,6 +40,7 @@ async def test_create_movie_success(mocker, common_mocks, test_client):
         "release_year": 2021,
     }
 
+
 @pytest.mark.asyncio
 async def test_create_movie_already_exists(mocker, common_mocks, test_client):
     mocker.patch.object(
@@ -72,7 +73,9 @@ async def test_get_movie_by_id_success(mocker, common_mocks, test_client):
         release_year=2021,
     )
     mocker.patch.object(MovieService, "get_movie_by_id", return_value=mock_movie)
-    response = await test_client.get("/v1/movies/1", headers=get_auth_headers("valid_token"))
+    response = await test_client.get(
+        "/v1/movies/1", headers=get_auth_headers("valid_token")
+    )
     assert response.status_code == 200
     assert response.json() == {
         "id": 1,
@@ -86,7 +89,9 @@ async def test_get_movie_by_id_success(mocker, common_mocks, test_client):
 @pytest.mark.asyncio
 async def test_get_movie_by_id_not_found(mocker, common_mocks, test_client):
     mocker.patch.object(MovieService, "get_movie_by_id", return_value=None)
-    response = await test_client.get("/v1/movies/1", headers=get_auth_headers("valid_token"))
+    response = await test_client.get(
+        "/v1/movies/1", headers=get_auth_headers("valid_token")
+    )
     assert response.status_code == 404
     assert response.json() == {"detail": "Movie with ID 1 not found."}
 
@@ -144,7 +149,9 @@ async def test_update_movie_not_found(mocker, common_mocks, test_client):
 async def test_delete_movie_success(mocker, common_mocks, test_client):
     mock_response = {"message": "Movie deleted successfully"}
     mocker.patch.object(MovieService, "delete_movie", return_value=mock_response)
-    response = await test_client.delete("/v1/movies/1", headers=get_auth_headers("valid_token"))
+    response = await test_client.delete(
+        "/v1/movies/1", headers=get_auth_headers("valid_token")
+    )
     assert response.status_code == 200
     assert response.json() == {"message": "Movie deleted successfully"}
 
@@ -152,7 +159,9 @@ async def test_delete_movie_success(mocker, common_mocks, test_client):
 @pytest.mark.asyncio
 async def test_delete_movie_not_found(mocker, common_mocks, test_client):
     mocker.patch.object(MovieService, "delete_movie", return_value=None)
-    response = await test_client.delete("/v1/movies/1", headers=get_auth_headers("valid_token"))
+    response = await test_client.delete(
+        "/v1/movies/1", headers=get_auth_headers("valid_token")
+    )
     assert response.status_code == 404
     assert response.json() == {"detail": "Movie with ID 1 not found."}
 
@@ -176,7 +185,9 @@ async def test_get_all_movies_success(mocker, common_mocks, test_client):
         ),
     ]
     mocker.patch.object(MovieService, "get_all_movies", return_value=mock_movies)
-    response = await test_client.get("/v1/movies/", headers=get_auth_headers("valid_token"))
+    response = await test_client.get(
+        "/v1/movies/", headers=get_auth_headers("valid_token")
+    )
     assert response.status_code == 200
     assert response.json() == [
         {
@@ -199,7 +210,9 @@ async def test_get_all_movies_success(mocker, common_mocks, test_client):
 @pytest.mark.asyncio
 async def test_get_all_movies_empty(mocker, common_mocks, test_client):
     mocker.patch.object(MovieService, "get_all_movies", return_value=[])
-    response = await test_client.get("/v1/movies/", headers=get_auth_headers("valid_token"))
+    response = await test_client.get(
+        "/v1/movies/", headers=get_auth_headers("valid_token")
+    )
     assert response.status_code == 200
     assert response.json() == []
 

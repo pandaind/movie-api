@@ -1,20 +1,20 @@
 import json
+
 import pytest
 import websockets
 from websockets import serve
 
 from tests.conftests import test_client
 
+
 async def mock_chatroom(websocket):
     async for message in websocket:
         data = json.loads(message)
-        response = {
-            "sender": "testuser",
-            "message": data["message"]
-        }
+        response = {"sender": "testuser", "message": data["message"]}
         await websocket.send(json.dumps(response))
         # Simulate user disconnect
         await websocket.close()
+
 
 @pytest.mark.asyncio
 async def test_chatroom_endpoint(test_client):

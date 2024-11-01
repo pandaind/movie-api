@@ -14,6 +14,7 @@ from app.models.user_role import User, UserRole
 async def side_effect_profile_endpoint_middleware(request, call_next):
     return await call_next(request)
 
+
 @pytest.fixture(scope="function")
 def common_mocks(mocker):
     mocker.patch(
@@ -70,18 +71,28 @@ async def test_db_session(setup_db):
         await session.commit()
         yield session
 
+
 @pytest_asyncio.fixture(scope="function")
 async def integration_test_client(test_db_session, mocker):
-    mocker.patch.object(ProfileEndpointsMiddleWare, "dispatch", side_effect=side_effect_profile_endpoint_middleware)
+    mocker.patch.object(
+        ProfileEndpointsMiddleWare,
+        "dispatch",
+        side_effect=side_effect_profile_endpoint_middleware,
+    )
     async with AsyncClient(
         transport=ASGITransport(app=app), base_url="http://testserver"
     ) as client:
         app.dependency_overrides[get_db] = lambda: test_db_session
         yield client
 
+
 @pytest_asyncio.fixture(scope="function")
 async def test_client(mocker):
-    mocker.patch.object(ProfileEndpointsMiddleWare, "dispatch", side_effect=side_effect_profile_endpoint_middleware)
+    mocker.patch.object(
+        ProfileEndpointsMiddleWare,
+        "dispatch",
+        side_effect=side_effect_profile_endpoint_middleware,
+    )
     async with AsyncClient(
         transport=ASGITransport(app=app), base_url="http://testserver"
     ) as client:

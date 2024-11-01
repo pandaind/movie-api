@@ -14,14 +14,10 @@ class ConnectionManager:
     def disconnect(self, websocket: WebSocket):
         self.active_connections.remove(websocket)
 
-    async def send_personal_message(
-            self, message: dict, websocket: WebSocket
-    ):
+    async def send_personal_message(self, message: dict, websocket: WebSocket):
         await websocket.send_json(message)
 
-    async def broadcast(
-            self, message: dict, exclude: WebSocket = None
-    ):
+    async def broadcast(self, message: dict, exclude: WebSocket = None):
         tasks = [
             connection.send_json(message)
             for connection in self.active_connections

@@ -1,7 +1,7 @@
 from typing import Annotated, List
 
 from babel.numbers import get_currency_name
-from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette.requests import Request
 
@@ -47,7 +47,6 @@ async def create_movie(
     movie = Movie(**movie_data.model_dump())
     response = await MovieService.create_movie(movie, db)
     return response
-
 
 
 @router.get(
@@ -206,6 +205,7 @@ async def delete_movie(
         raise MovieNotFoundException(movie_id)
     return {"message": "Movie deleted successfully"}
 
+
 async def get_currency(
     language: Annotated[resolve_accept_language, Depends()],
 ):
@@ -215,7 +215,6 @@ async def get_currency(
     }
 
     return currencies[language]
-
 
 
 @router.get(

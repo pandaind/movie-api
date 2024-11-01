@@ -9,15 +9,11 @@ from fastapi import (
     status,
 )
 from fastapi.responses import HTMLResponse
-from fastapi.security import (
-    OAuth2PasswordRequestForm,
-)
+from fastapi.security import OAuth2PasswordRequestForm
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 
-from app.chat.ws_password_bearer import (
-    OAuth2WebSocketPasswordBearer,
-)
+from app.chat.ws_password_bearer import OAuth2WebSocketPasswordBearer
 
 fake_users_db = {
     "johndoe": {
@@ -39,9 +35,7 @@ class User(BaseModel):
     username: str
 
 
-def get_user(
-        db: dict[str, str], username: str
-) -> User | None:
+def get_user(db: dict[str, str], username: str) -> User | None:
     if username in db:
         user_dict = db[username]
         return User(**user_dict)
@@ -53,7 +47,7 @@ def fake_token_generator(username: str) -> str:
 
 
 def fake_token_resolver(
-        token: str,
+    token: str,
 ) -> User | None:
     if token.startswith("tokenized"):
         user_id = token.removeprefix("tokenized")
@@ -61,13 +55,11 @@ def fake_token_resolver(
         return user
 
 
-oauth2_scheme_for_ws = OAuth2WebSocketPasswordBearer(
-    tokenUrl="/v1/wss/token"
-)
+oauth2_scheme_for_ws = OAuth2WebSocketPasswordBearer(tokenUrl="/v1/wss/token")
 
 
 def get_username_from_token(
-        token: str = Depends(oauth2_scheme_for_ws),
+    token: str = Depends(oauth2_scheme_for_ws),
 ) -> str:
     user = fake_token_resolver(token)
     if not user:
@@ -83,7 +75,7 @@ router = APIRouter()
 
 @router.post("/token")
 async def login(
-        form_data: OAuth2PasswordRequestForm = Depends(),
+    form_data: OAuth2PasswordRequestForm = Depends(),
 ):
     user_dict = fake_users_db.get(form_data.username)
     if not user_dict:
@@ -91,12 +83,8 @@ async def login(
             status_code=400,
             detail="Incorrect username or password",
         )
-    hashed_password = fakely_hash_password(
-        form_data.password
-    )
-    if not hashed_password == user_dict.get(
-            "hashed_password"
-    ):
+    hashed_password = fakely_hash_password(form_data.password)
+    if not hashed_password == user_dict.get("hashed_password"):
         raise HTTPException(
             status_code=400,
             detail="Incorrect username or password",
@@ -112,12 +100,10 @@ async def login(
 
 @router.get("/login")
 async def login_form(
-        request: Request,
-        redirecturl: Optional[str] = None,
+    request: Request,
+    redirecturl: Optional[str] = None,
 ) -> HTMLResponse:
-    templates = Jinja2Templates(
-        directory="templates"
-    )
+    templates = Jinja2Templates(directory="templates")
     if redirecturl:
         context = {"redirection_url": redirecturl}
     else:

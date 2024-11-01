@@ -1,7 +1,7 @@
 import pytest
 from fastapi import status
 
-from tests.conftests import setup_db, integration_test_client, test_db_session
+from tests.conftests import integration_test_client, setup_db, test_db_session
 
 
 async def get_token(integration_test_client):
