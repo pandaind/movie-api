@@ -1,3 +1,89 @@
 [tool.black]
 line-length = 88
 target-version = ['py38']
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "movies_api"
+version = "0.1.0"
+description = "A FastAPI learning project"
+authors = [
+    { name="pandac", email="info@pandac.in" }
+]
+dependencies = [
+    "fastapi[all]~=0.115.0",
+    "uvicorn~=0.30.6",
+    "gunicorn~=22.0.0",
+    "sqlalchemy~=2.0.35",
+    "asyncpg",
+    "python-dotenv",
+    "pydantic~=2.9.2",
+    "alembic~=1.13.3",
+    "apscheduler~=3.10.4",
+    "email_validator~=2.2.0",
+    "starlette~=0.40.0",
+    "babel~=2.16.0",
+    "passlib[bcrypt]",
+    "python-jose[cryptography]",
+    "pyotp~=2.6.0",
+    "pyinstrument",
+    "slowapi",
+    "grpcio",
+    "grpcio-tools",
+    "strawberry-graphql[fastapi]",
+    "joblib",
+    "scikit-learn",
+    "huggingface_hub",
+    "requests",
+    "pytest",
+    "httpx~=0.27.2",
+    "pytest-asyncio",
+    "pytest-mock",
+    "aiosqlite",
+    "rich~=13.9.2",
+    "websockets",
+    "black",
+    "isort",
+    "pre-commit"
+]
+
+[tool.hatch.envs.default]
+dependencies = [
+    "fastapi[all]~=0.115.0",
+    "uvicorn~=0.30.6",
+    "gunicorn~=22.0.0",
+    "sqlalchemy~=2.0.35",
+    "asyncpg",
+    "python-dotenv",
+    "pydantic~=2.9.2",
+    "alembic~=1.13.3",
+    "apscheduler~=3.10.4",
+    "email_validator~=2.2.0",
+    "starlette~=0.40.0",
+    "babel~=2.16.0",
+    "passlib[bcrypt]",
+    "python-jose[cryptography]",
+    "pyotp~=2.6.0",
+    "pyinstrument",
+    "slowapi",
+    "grpcio",
+    "grpcio-tools",
+    "strawberry-graphql[fastapi]",
+    "joblib",
+    "scikit-learn",
+    "huggingface_hub",
+    "requests",
+    "pytest",
+    "httpx~=0.27.2",
+    "pytest-asyncio",
+    "pytest-mock",
+    "aiosqlite",
+    "rich~=13.9.2",
+    "websockets",
+    "black",
+    "isort",
+    "pre-commit"
+]

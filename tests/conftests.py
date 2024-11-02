@@ -1,5 +1,6 @@
 import pytest
 import pytest_asyncio
+from fastapi import FastAPI
 from httpx import ASGITransport, AsyncClient
 from passlib.context import CryptContext
 from sqlalchemy import StaticPool
@@ -8,6 +9,7 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_asyn
 from app.api.profiler import ProfileEndpointsMiddleWare
 from app.db.database import Base, get_db
 from app.main import app
+from app.middleware.webhook import WebhookSenderMiddleWare
 from app.models.user_role import User, UserRole
 
 
@@ -79,6 +81,7 @@ async def integration_test_client(test_db_session, mocker):
         "dispatch",
         side_effect=side_effect_profile_endpoint_middleware,
     )
+
     async with AsyncClient(
         transport=ASGITransport(app=app), base_url="http://testserver"
     ) as client:

@@ -3,11 +3,14 @@ from contextlib import asynccontextmanager
 
 import joblib
 import requests
-from fastapi import FastAPI, HTTPException
+from fastapi import Body, FastAPI, HTTPException, Request
 from fastapi.exceptions import RequestValidationError
-from huggingface_hub import hf_hub_download, hf_hub_url
+from huggingface_hub import hf_hub_url
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
+from starlette.middleware import Middleware
+from starlette.middleware.cors import CORSMiddleware
+from starlette.middleware.trustedhost import TrustedHostMiddleware
 
 from app.api.profiler import ProfileEndpointsMiddleWare
 from app.api.rate_limit import limiter
@@ -27,7 +30,11 @@ from app.db.database import init_db
 from app.gql.gql_utils import graphql_app
 from app.grpc import api as grpc
 from app.jobs.scheduler_jobs import scheduler
+from app.middleware.asgi_middleware import ASGIMiddleware, asgi_middleware
 from app.middleware.middleware import ClientInfoMiddleware
+from app.middleware.req_middleware import HashBodyContentMiddleWare
+from app.middleware.res_middleware import ExtraHeadersResponseMiddleware
+from app.middleware.webhook import Event, WebhookSenderMiddleWare
 from app.ml import doctor
 from app.ml.doctor import FILENAME, REPO_ID, ml_model
 from app.security import api as security
@@ -66,7 +73,46 @@ app = FastAPI(
     description="An API for managing a simple movie database. Supports CRUD operations with error handling.",
     version="1.0.0",
     lifespan=lifespan,
+    middleware=[
+        Middleware(
+            ASGIMiddleware,
+            parameter="example_parameter",
+        ),
+        Middleware(
+            asgi_middleware,
+            parameter="example_parameter",
+        ),
+    ],
 )
+
+app.add_middleware(
+    HashBodyContentMiddleWare,
+    allowed_paths=["/v1/doctor/send"],
+)
+
+app.add_middleware(
+    ExtraHeadersResponseMiddleware,
+    headers=(
+        ("new-header", "fastapi-demo"),
+        ("another-header", "another"),
+    ),
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+app.add_middleware(
+    TrustedHostMiddleware,
+    allowed_hosts=["*"],
+)
+
+# app.add_middleware(
+#     WebhookSenderMiddleWare,
+# )
 
 # Configure RateLimit
 app.state.limiter = limiter
@@ -100,3 +146,27 @@ app.add_exception_handler(MovieAlreadyExistsException, movie_already_exists_hand
 app.add_exception_handler(RequestValidationError, validation_exception_handler)
 app.add_exception_handler(HTTPException, http_exception_handler)
 app.add_exception_handler(Exception, unhandled_exception_handler)
+
+
+# @app.get("/get")
+# async def send():
+#     return {"message": "Hello World"}
+#
+#
+# @app.post("/register-webhook-url")
+# async def add_webhook_url(request: Request, url: str = Body()):
+#     if not url.startswith("http"):
+#         url = f"http://{url}"
+#     request.state.webhook_urls.add(url)
+#     return {"url added": url}
+#
+#
+# @app.webhooks.post("/fastapi-webhook")
+# def fastapi_webhook(event: Event):
+#     """_summary_
+#
+#     Args:
+#         event (Event): Received event from webhook
+#         It contains information about the
+#         host, path, timestamp and body of the request
+#     """

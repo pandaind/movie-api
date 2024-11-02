@@ -1,9 +1,7 @@
-from contextlib import contextmanager
+import logging
 from typing import Annotated
 
-import joblib
-from fastapi import APIRouter, Depends, FastAPI
-from huggingface_hub import hf_hub_download
+from fastapi import APIRouter, Body, Depends
 from pydantic import create_model
 
 from app.ml.utils import symptoms_list
@@ -26,6 +24,7 @@ FILENAME = "sklearn_model.joblib"
 
 
 router = APIRouter()
+logger = logging.getLogger("uvicorn")
 
 query_parameters = {symp: (bool, False) for symp in symptoms_list[:10]}
 
@@ -42,3 +41,9 @@ async def get_diagnosis(
     )
     diseases = ml_model["doctor"].predict([array])
     return {"diseases": [disease for disease in diseases]}
+
+
+@router.post("/send")
+async def send(message: str = Body()):
+    logger.info(f"Message: {message}")
+    return message
