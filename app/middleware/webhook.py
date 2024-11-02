@@ -18,7 +18,7 @@ class Event(BaseModel):
         "json_schema_extra": {
             "examples": [
                 {
-                    "host": "127.0.0.1",
+                    "host": "localhost",
                     "path": "/send",
                     "time": "2024-05-22T14:24:28.847663",
                     "body": '"body content"',

@@ -1,19 +1,11 @@
 import pytest
-from fastapi import FastAPI
-from starlette.testclient import TestClient
 
-from app.gql.gql_utils import graphql_app
-
-
-@pytest.fixture
-def client():
-    app = FastAPI()
-    app.include_router(graphql_app, prefix="/graphql")
-    return TestClient(app)
+from tests.conftests import integration_test_client, setup_db, test_db_session
 
 
 @pytest.mark.asyncio
-async def test_movies_query(client):
+@pytest.mark.integration
+async def test_movies_query(integration_test_client, test_db_session, setup_db):
     query = """
     query {
         movies {
@@ -25,7 +17,7 @@ async def test_movies_query(client):
         }
     }
     """
-    response = client.post("/graphql", json={"query": query})
+    response = await integration_test_client.post("/graphql", json={"query": query})
     assert response.status_code == 200
     data = response.json()
     assert "data" in data
