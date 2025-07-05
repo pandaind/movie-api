@@ -13,7 +13,7 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 class UserService:
 
     @classmethod
-    async def add_user(cls, session: AsyncSession, user: User) -> UserCreate | None:
+    async def create_user(cls, session: AsyncSession, user: User) -> UserCreate | None:
         hashed_password = pwd_context.hash(user.hashed_password)
         user.hashed_password = hashed_password
         session.add(user)
@@ -26,7 +26,7 @@ class UserService:
         return user
 
     @classmethod
-    async def get_user(
+    async def find_by_username_or_email(
         cls, session: AsyncSession, username_or_email: str
     ) -> User | None:
         try:

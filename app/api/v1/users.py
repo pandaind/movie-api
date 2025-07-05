@@ -33,7 +33,7 @@ async def register(
         hashed_password=user.password,
         role=UserRole(user.role),
     )
-    user_response = await UserService.add_user(session=session, user=user)
+    user_response = await UserService.create_user(session=session, user=user)
     if not user_response:
         raise HTTPException(
             409,
@@ -52,7 +52,7 @@ async def login(
     user: UserCreateResponse = Depends(get_current_user),
     session: AsyncSession = Depends(get_db),
 ):
-    user = await UserService.get_user(session, user.username)
+    user = await UserService.find_by_username_or_email(session, user.username)
 
     response.set_cookie(key="fakesession", value=f"{user.id}", httponly=True)
     return {"message": "User logged in successfully"}
