@@ -5,7 +5,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import joinedload, load_only
 
-from app.models.user_role import User, UserCreate
+from app.models.user_role import User, UserCreate, Profile
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -42,22 +42,34 @@ class UserService:
     # Use join for filtering and sorting based on related tables.
     # Use joinedload for eager loading related objects to avoid additional queries.
     @classmethod
+    async def _get_user_with_options(
+        cls, session: AsyncSession, user_id: int, *options
+    ) -> User | None:
+        statement = select(User).where(User.id == user_id)
+        if options:
+            statement = statement.options(*options)
+        result = await session.execute(statement)
+        return result.scalar_one_or_none()
+
+    @classmethod
     async def get_user_with_profile(
         cls, session: AsyncSession, user_id: int
     ) -> User | None:
-        result = await session.execute(
-            select(User).options(joinedload(User.profile)).where(User.id == user_id)
+        return await cls._get_user_with_options(
+            session, user_id, joinedload(User.profile)
         )
-        return result.scalar_one_or_none()
 
     @classmethod
     async def get_user_with_profile_join(
         cls, session: AsyncSession, user_id: int
     ) -> User | None:
+        # It's important to note that options like join() cannot be passed as
+        # arguments to the options() method of a query.
+        # Therefore, this method cannot use the _get_user_with_options helper.
         result = await session.execute(
             select(User)
             .join(User.profile)
-            .options(load_only(User.username, User.email, User.profile))
+            .options(load_only(User.username, User.email))  # User.profile removed
             .where(User.id == user_id)
         )
         return result.scalar_one_or_none()
@@ -66,9 +78,6 @@ class UserService:
     async def get_user_with_ony_bio(
         cls, session: AsyncSession, user_id: int
     ) -> User | None:
-        result = await session.execute(
-            select(User)
-            .options(joinedload(User.profile).load_only("bio"))
-            .where(User.id == user_id)
+        return await cls._get_user_with_options(
+            session, user_id, joinedload(User.profile).load_only(Profile.bio)
         )
-        return result.scalar_one_or_none()
