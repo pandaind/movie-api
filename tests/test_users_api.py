@@ -9,7 +9,7 @@ from tests.conftests import test_client
 @pytest.mark.asyncio
 async def test_register_user(mocker, test_client):
     mock_user_service = mocker.patch(
-        "app.services.user_services.UserService.add_user", new_callable=AsyncMock
+        "app.services.user_services.UserService.create_user", new_callable=AsyncMock
     )
     mock_user_service.return_value = UserCreateResponse(
         username="testuser", email="test@example.com"
@@ -35,7 +35,7 @@ async def test_register_user(mocker, test_client):
 @pytest.mark.asyncio
 async def test_register_user_already_exists(mocker, test_client):
     mock_user_service = mocker.patch(
-        "app.services.user_services.UserService.add_user", new_callable=AsyncMock
+        "app.services.user_services.UserService.create_user", new_callable=AsyncMock
     )
     mock_user_service.return_value = None
 

@@ -15,7 +15,7 @@ from app.services.user_services import UserService, pwd_context
 async def authenticate_user(
     session: AsyncSession, username_or_email: str, password: str
 ) -> User | None:
-    user = await UserService.get_user(session, username_or_email)
+    user = await UserService.find_by_username_or_email(session, username_or_email)
     if not user or not pwd_context.verify(password, user.hashed_password):
         return
     return user
@@ -45,7 +45,7 @@ async def decode_access_token(
         return
     if not username or not all(scope in token_scopes for scope in required_scopes):
         return
-    user = await UserService.get_user(db_session, username)
+    user = await UserService.find_by_username_or_email(db_session, username)
     user.scopes = token_scopes
     return user
 
@@ -61,7 +61,7 @@ async def decode_access_token_no_scope(
         return
     if not username:
         return
-    user = await UserService.get_user(db_session, username)
+    user = await UserService.find_by_username_or_email(db_session, username)
     user.scopes = token_scopes
     user.totp_secret = payload.get("totp_secret")
     return user

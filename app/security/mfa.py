@@ -45,7 +45,7 @@ async def enable_mfa(
     db_session: AsyncSession = Depends(get_db),
 ):
     secret = generate_totp_secret()
-    db_user = await UserService.get_user(db_session, user.username)
+    db_user = await UserService.find_by_username_or_email(db_session, user.username)
     db_user.totp_secret = secret
     db_session.add(db_user)
     await db_session.commit()
@@ -65,7 +65,7 @@ async def verify_totp(
     username: str,
     session: AsyncSession = Depends(get_db),
 ):
-    user = await UserService.get_user(session, username)
+    user = await UserService.find_by_username_or_email(session, username)
     if not user.totp_secret:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,

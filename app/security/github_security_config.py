@@ -23,10 +23,10 @@ async def resolve_github_token(
         verify=False,
     ).json()
     username = user_response.get("login", " ")
-    user = await UserService.get_user(session, username)
+    user = await UserService.find_by_username_or_email(session, username)
     if not user:
         email = user_response.get("email", " ")
-        user = await UserService.get_user(session, email)
+        user = await UserService.find_by_username_or_email(session, email)
     # Process user_response to log
     # the user in or create a new account
     if not user:
