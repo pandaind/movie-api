@@ -3,7 +3,7 @@ from contextlib import asynccontextmanager
 
 import joblib
 import requests
-from fastapi import Body, FastAPI, HTTPException, Request
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.exceptions import RequestValidationError
 from huggingface_hub import hf_hub_url
 from slowapi import _rate_limit_exceeded_handler
@@ -52,9 +52,8 @@ async def lifespan(app: FastAPI):
     scheduler.start()
     await init_db()  # Initialize the database and create tables
 
-    # Download the file with SSL verification disabled
     url = hf_hub_url(repo_id=REPO_ID, filename=FILENAME)
-    response = requests.get(url, verify=False)
+    response = requests.get(url)
     with open(FILENAME, "wb") as f:
         f.write(response.content)
 
@@ -146,27 +145,3 @@ app.add_exception_handler(MovieAlreadyExistsException, movie_already_exists_hand
 app.add_exception_handler(RequestValidationError, validation_exception_handler)
 app.add_exception_handler(HTTPException, http_exception_handler)
 app.add_exception_handler(Exception, unhandled_exception_handler)
-
-
-# @app.get("/get")
-# async def send():
-#     return {"message": "Hello World"}
-#
-#
-# @app.post("/register-webhook-url")
-# async def add_webhook_url(request: Request, url: str = Body()):
-#     if not url.startswith("http"):
-#         url = f"http://{url}"
-#     request.state.webhook_urls.add(url)
-#     return {"url added": url}
-#
-#
-# @app.webhooks.post("/fastapi-webhook")
-# def fastapi_webhook(event: Event):
-#     """_summary_
-#
-#     Args:
-#         event (Event): Received event from webhook
-#         It contains information about the
-#         host, path, timestamp and body of the request
-#     """

@@ -53,7 +53,7 @@ async def create_movie(
     "/",
     response_model=List[MovieSchema],
     summary="Get all movies (v1)",
-    description="Retrieve a list of all movie s in the version 1 database.",
+    description="Retrieve a list of all movies in the version 1 database.",
 )
 async def get_movies(
     db: AsyncSession = Depends(get_db), _user=Depends(get_current_user)
@@ -93,8 +93,6 @@ async def get_movie(
         :param db:
     """
     movie = await MovieService.get_movie_by_id(movie_id, db)
-    if movie is None:
-        raise MovieNotFoundException(movie_id)
     return movie
 
 

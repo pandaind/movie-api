@@ -6,6 +6,7 @@ from jose import JWTError, jwt
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
 
+from app.core.config import settings
 from app.db.database import get_db
 from app.models.user_role import User, UserRole
 from app.security.model import oauth2_scheme
@@ -21,9 +22,9 @@ async def authenticate_user(
     return user
 
 
-SECRET_KEY = "a_very_secret_key"
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+SECRET_KEY = settings.secret_key
+ALGORITHM = settings.algorithm
+ACCESS_TOKEN_EXPIRE_MINUTES = settings.access_token_expire_minutes
 
 
 def create_access_token(data: dict, scopes: list[str]) -> str:
@@ -89,8 +90,7 @@ async def get_premium_user(
 
 ### Credit Card Encryption
 
-key = Fernet.generate_key()
-cypher_suite = Fernet(key)
+cypher_suite = Fernet(settings.fernet_key.encode())
 
 
 def encrypt_credit_card_info(card_info: str) -> str:

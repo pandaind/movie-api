@@ -8,7 +8,7 @@ DATABASE_URL = settings.database_url
 Base = declarative_base()
 
 # Create Async Engine for PostgreSQL
-engine = create_async_engine(DATABASE_URL, echo=True)
+engine = create_async_engine(DATABASE_URL, echo=settings.debug)
 
 # Create a sessionmaker for async ORM
 async_session = sessionmaker(

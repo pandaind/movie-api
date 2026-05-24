@@ -1,4 +1,4 @@
-from hashlib import sha1
+from hashlib import sha256
 
 from starlette.types import ASGIApp, Message, Receive, Scope, Send
 
@@ -23,7 +23,7 @@ class HashBodyContentMiddleWare:
             assert message["type"] == "http.request"
 
             body = message.get("body", b"")
-            message["body"] = f'"{sha1(body).hexdigest()}"'.encode()
+            message["body"] = f'"{sha256(body).hexdigest()}"'.encode()
 
             return message
 

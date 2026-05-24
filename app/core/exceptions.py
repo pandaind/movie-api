@@ -54,5 +54,5 @@ async def unhandled_exception_handler(request: Request, exc: Exception):
     logger.critical(f"Unhandled Exception: {exc}", exc_info=True)
     return JSONResponse(
         status_code=500,
-        content={"detail": "An unexpected error occurred", "error": str(exc)},
+        content={"detail": "An unexpected error occurred"},
     )
